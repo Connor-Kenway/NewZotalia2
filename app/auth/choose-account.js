@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import { useUser } from "../src/context/UserContext";
+import { useUser } from "../../src/context/UserContext";
 
 export default function ChooseAccount() {
   const router = useRouter();
