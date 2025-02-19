@@ -30,7 +30,7 @@ export default function ClientProfilePic() {
   // Similar to handleSubmit in web
   const handleSubmit = () => {
     // In a real app, you might store the selected image URI in AsyncStorage or context
-    router.push("/client/client-confirm"); // Navigate to confirm page
+    router.push("/client/client-homepage"); // Navigate to confirm page
   };
 
   return (
