@@ -9,6 +9,13 @@ export const api = axios.create({
   },
 });
 
+
+export const signInApi = axios.create({
+    baseURL: API_URL,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+});
 export const setAuthToken = (token) => {
   if (token) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;

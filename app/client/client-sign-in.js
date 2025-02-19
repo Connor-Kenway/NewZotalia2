@@ -3,14 +3,14 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-nativ
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useUser } from "../../src/context/UserContext";
-import { signUp } from '../../api/auth';
+import { signIn } from '../../api/auth';
 
-export default function SignUpClient() {
+export default function SignInClient() {
   const router = useRouter();
   const { setUserType, setIsFirstTimeUser } = useUser() || {};
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+//   const [confirmPassword, setConfirmPassword] = useState("");
 
   if (!setUserType || !setIsFirstTimeUser) {
     console.error("Error: UserContext is not available!");
@@ -22,14 +22,12 @@ export default function SignUpClient() {
   }
 
   const handleSubmit = async () => {
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
 
     //new code inserted
     try {
-      const response = await signUp({ email, password });
+        console.log(email)
+        console.log(password)
+      const response = await signIn({ email, password });
       // setMessage(response.message);
     } catch (error) {
       //setMessage('Sign up failed');
@@ -42,11 +40,11 @@ export default function SignUpClient() {
     try {
       await AsyncStorage.setItem("userType", "client");
       setUserType("client");
-      setIsFirstTimeUser(false);
+    //   setIsFirstTimeUser(false);
 
       router.push("/client/client-profile-info");
     } catch (error) {
-      console.error("Failed to set userType in AsyncStorage", error);
+
     }
   };
 
@@ -72,13 +70,7 @@ export default function SignUpClient() {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
+
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>→</Text>
         </TouchableOpacity>

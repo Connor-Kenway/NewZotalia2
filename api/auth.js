@@ -1,11 +1,15 @@
-import { api, setAuthToken } from './index';
+import { signInApi, setAuthToken } from './index';
 export const signUp = async (data) => {
     const response = await api.post('/signup', data);
     return response.data;
   };
   
   export const signIn = async (data) => {
-    const response = await api.post('/token', data);
+    console.log(data)
+    const formData = new URLSearchParams();
+    formData.append('username', email);
+    formData.append('password', password);
+    const response = await signInApi.post('/token', data);
     const { access_token } = response.data;
     setAuthToken(access_token);
     return response.data;
