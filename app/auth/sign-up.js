@@ -38,10 +38,14 @@ export default function SignUpClient() {
     }
   };
 
+  const handleSignIn = () => {
+    router.push("/auth");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        Sign up as a <Text style={{ color: "red" }}>Client</Text>
+        <Text style={{ color: "green" }}>Sign Up Now</Text>
       </Text>
       <View style={styles.form}>
         <TextInput
@@ -70,6 +74,14 @@ export default function SignUpClient() {
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>→</Text>
         </TouchableOpacity>
+
+        <View style={styles.signinContainer}>
+            <Text style={styles.signupText}>Don’t have an account?</Text>
+            <TouchableOpacity onPress={handleSignIn}>
+                <Text style={[styles.signupText, { color: "blue", marginLeft: 5}]}>Sign Up
+                </Text>
+            </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -95,7 +107,7 @@ const styles = StyleSheet.create({
   input: {
     padding: 12,
     fontSize: 16,
-    borderColor: "red",
+    borderColor: "green",
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 10,
@@ -105,7 +117,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "red",
+    backgroundColor: "green",
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
@@ -113,6 +125,11 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: "#fff",
+  },
+  signinContainer: {
+    flexDirection: "row",
+    marginTop: 20,
+    alignItems: "center",
   },
   errorText: {
     fontSize: 16,
