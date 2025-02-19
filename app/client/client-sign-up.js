@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-nativ
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useUser } from "../../src/context/UserContext";
+import { signUp } from '../../api/auth';
 
 export default function SignUpClient() {
   const router = useRouter();
@@ -26,6 +27,15 @@ export default function SignUpClient() {
       return;
     }
 
+    //new code inserted
+    try {
+      const response = await signUp({ email, password });
+      // setMessage(response.message);
+    } catch (error) {
+      //setMessage('Sign up failed');
+      return
+    }
+    
     // Store user as "client" and move to profile setup
     try {
       await AsyncStorage.setItem("userType", "client");
