@@ -27,7 +27,7 @@ export default function ChooseAccount() {
       if (type === "gig-worker") {
         router.replace("/gig-worker/gigworker-sign-up");
       } else {
-        router.replace("/client/client-sign-up");
+        router.replace("/client/client-profile-info");
       }
     } catch (error) {
       console.error("Failed to store userType in AsyncStorage", error);

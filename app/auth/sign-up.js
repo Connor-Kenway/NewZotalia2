@@ -11,14 +11,14 @@ export default function SignUpClient() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  if (!setUserType || !setIsFirstTimeUser) {
-    console.error("Error: UserContext is not available!");
-    return (
-      <View style={styles.container}>
-        <Text style={styles.errorText}>Error: Context not available</Text>
-      </View>
-    );
-  }
+//   if (!setUserType || !setIsFirstTimeUser) {
+//     console.error("Error: UserContext is not available!");
+//     return (
+//       <View style={styles.container}>
+//         <Text style={styles.errorText}>Error: Context not available</Text>
+//       </View>
+//     );
+//   }
 
   const handleSubmit = async () => {
     if (password !== confirmPassword) {
@@ -26,16 +26,18 @@ export default function SignUpClient() {
       return;
     }
 
-    // Store user as "client" and move to profile setup
-    try {
-      await AsyncStorage.setItem("userType", "client");
-      setUserType("client");
-      setIsFirstTimeUser(false);
+    router.push("auth/choose-account");
 
-      router.push("/client/client-profile-info");
-    } catch (error) {
-      console.error("Failed to set userType in AsyncStorage", error);
-    }
+    // // Store user as "client" and move to profile setup
+    // try {
+    //   await AsyncStorage.setItem("userType", "client");
+    //   setUserType("client");
+    //   setIsFirstTimeUser(false);
+
+    //   router.push("/client/client-profile-info");
+    // } catch (error) {
+    //   console.error("Failed to set userType in AsyncStorage", error);
+    // }
   };
 
   const handleSignIn = () => {
