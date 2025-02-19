@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-nativ
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useUser } from "../../src/context/UserContext";
+import { signUp } from "../../src/services/authService";
 
 export default function SignUpClient() {
   const router = useRouter();
@@ -21,10 +22,19 @@ export default function SignUpClient() {
 //   }
 
   const handleSubmit = async () => {
+    console.log('in this function')
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
+
+    try {
+        console.log('in this function')
+        const response = await signUp({ email, password });
+        // setMessage(response.message);
+      } catch (error) {
+        //setMessage('Sign up failed');
+      }
 
     router.push("auth/choose-account");
 

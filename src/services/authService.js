@@ -1,14 +1,25 @@
-import axios from 'axios';
+import { signInApi, setAuthToken, api } from './index';
 
-const API_URL = 'http://localhost:8000/api';
-
-export const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
 export const signUp = async (data) => {
-  const response = await api.post('/signup', data);
-  return response.data;
-};
+    console.log(data)
+    const response = await api.post('/signup', data);
+    console.log(response)
+    console.log('after response')
+    return response.data;
+  };
+  
+  export const signIn = async (data) => {
+    console.log(data)
+    const formData = new URLSearchParams();
+    formData.append('username', email);
+    formData.append('password', password);
+    const response = await signInApi.post('/token', data);
+    const { access_token } = response.data;
+    setAuthToken(access_token);
+    return response.data;
+  };
+  
+  export const signOut = async () => {
+    await api.post('/signout');
+    setAuthToken(null);
+  };
