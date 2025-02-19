@@ -28,6 +28,9 @@ export default function SignInClient() {
         console.log(email)
         console.log(password)
       const response = await signIn({ email, password });
+      const { access_token } = response;
+      await AsyncStorage.setItem("access_token", access_token);
+      setAuthToken(access_token);
       // setMessage(response.message);
     } catch (error) {
       //setMessage('Sign up failed');

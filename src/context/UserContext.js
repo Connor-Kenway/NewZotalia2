@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setAuthToken } from "../../api/index";
 
 const UserContext = createContext();
 
@@ -26,8 +27,21 @@ export const UserProvider = ({ children }) => {
         console.error("Failed to load userType from AsyncStorage", error);
       }
     };
-
+    //loading the token from async storage
+    const loadToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        if (token) {
+          setAuthToken(token);
+          console.log("Token loaded and set:", token);
+        }
+      } catch (error) {
+        console.error("Failed to load token from AsyncStorage", error);
+      }
+    };
+   
     loadUserType();
+    loadToken();
   }, []);
 
   return (
