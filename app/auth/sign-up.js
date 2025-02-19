@@ -78,9 +78,9 @@ export default function SignUpClient() {
         </TouchableOpacity>
 
         <View style={styles.signinContainer}>
-            <Text style={styles.signupText}>Don’t have an account?</Text>
+            <Text style={styles.signupText}>Already have an account?</Text>
             <TouchableOpacity onPress={handleSignIn}>
-                <Text style={[styles.signupText, { color: "blue", marginLeft: 5}]}>Sign Up
+                <Text style={[styles.signupText, { color: "blue", marginLeft: 5}]}>Sign In
                 </Text>
             </TouchableOpacity>
         </View>
