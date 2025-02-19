@@ -32,7 +32,7 @@ export default function SignUpClient() {
       setUserType("client");
       setIsFirstTimeUser(false);
 
-      router.push("/client/profile-setup");
+      router.push("/client/client-profile-info");
     } catch (error) {
       console.error("Failed to set userType in AsyncStorage", error);
     }
