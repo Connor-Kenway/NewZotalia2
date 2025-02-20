@@ -2,16 +2,35 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
+import { api } from "../../src/services/index";
 
 export default function ClientProfileInfo() {
   const router = useRouter();
   const [companyName, setCompanyName] = useState("");
   const [description, setDescription] = useState("");
+  const [userId, setUserId] = useState(null);
+
 
   const handleSubmit = async () => {
     try {
+
+      //getting profile_id to kink to employer table
+      const profile_id = await api.get("/profiles").;
       // Store details (in a real app, you might send to a backend)
-      const profileData = { companyName, description };
+      const profileData = { 
+        //client_id auto generated
+        created_at: new Date().toISOString(),
+        user_id: 
+        company_name: companyName, 
+        company_description: description,
+        company_rating: 0,
+        individual_ratings:0
+      };
+      //calling api
+      console.log(api)
+     const response = await api.post("/employers", profileData);
+      cosole.log(response)
+
       await AsyncStorage.setItem("clientProfile", JSON.stringify(profileData));
 
       // Navigate to the next screen

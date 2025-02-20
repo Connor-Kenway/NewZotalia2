@@ -11,11 +11,14 @@ export const signUp = async (data) => {
   export const signIn = async (data) => {
     console.log(data)
     const formData = new URLSearchParams();
-    formData.append('username', email);
-    formData.append('password', password);
-    const response = await signInApi.post('/token', data);
+    console.log(data,'breaking here')
+    formData.append('username', data.email);
+    formData.append('password', data.password);
+
+    const response = await signInApi.post('/token', formData);
     const { access_token } = response.data;
     setAuthToken(access_token);
+    console.log('success')
     return response.data;
   };
   
