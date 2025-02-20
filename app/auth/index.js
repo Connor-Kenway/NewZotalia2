@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { signIn } from "../../src/services/authService";
 
 export default function AuthIndex() {
   const router = useRouter();
@@ -14,14 +15,18 @@ export default function AuthIndex() {
   const handleSignIn = async () => {
     // 1. Validate email & password
     // 2. Make API call to sign in (or check credentials)
-    // 3. If success, determine user type (gig-worker or client) from response
-    // 4. Navigate to the appropriate homepage
-    //
-    // Example dummy logic:
+    // 3. Navigate to the appropriate homepage
+    try {
+        const response = await signIn({ email, password });
+        // setMessage(response.message);
+        } catch (error) {
+        //setMessage('Sign up failed');
+        }
+
     if (email === "gig@worker.com") {
-      router.replace("/gig-worker/home");
+      router.replace("/gig-worker/gigworker-homepage");
     } else {
-      router.replace("/client/home");
+      router.replace("/client/client-homepage");
     }
   };
 
@@ -70,7 +75,7 @@ export default function AuthIndex() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff5f5", // or your preferred color
+    backgroundColor: "#fff5f5",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "red", // match your color theme
+    color: "red",
   },
   input: {
     width: "80%",

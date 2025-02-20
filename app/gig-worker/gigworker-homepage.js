@@ -6,7 +6,7 @@ const GigWorkerHomePage = () => {
     <div style={styles.page}>
       <div style={styles.feedArea}>
         <div style={styles.placeholder}>
-          <p style={{ color: '#999' }}>Client Homepage</p>
+          <p style={{ color: '#999' }}>Gig Worker Homepage</p>
         </div>
       </div>
       <TabBar />

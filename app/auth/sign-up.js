@@ -22,14 +22,12 @@ export default function SignUpClient() {
 //   }
 
   const handleSubmit = async () => {
-    console.log('in this function')
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
 
     try {
-        console.log('in this function')
         const response = await signUp({ email, password });
         // setMessage(response.message);
       } catch (error) {
