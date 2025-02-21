@@ -20,7 +20,7 @@ export default function ClientProfileInfo() {
         console.log(token)
         if (token) {
           const decodedToken = jwtDecode(token);
-          console.log("Decoded token:", decodedToken);
+          console.log("Decoded token:", decodedToken.sub);
           setUserId(decodedToken.sub);
         }
       } catch (error) {
@@ -46,13 +46,9 @@ export default function ClientProfileInfo() {
         //dont' worry about this number
         individual_ratings:0
       };
-      //calling api
-      const profileData_id = {
-        id: userId
-      }
 
-      //have to setup base profile schema before the employer schema can reference it
-      const profiles_response = await api.post("/profiles/", profileData_id);
+
+      
       //once profiles id is set, the employers table can reference the profile id
      const employers_response = await api.post("/employers/", employer_profileData);
 

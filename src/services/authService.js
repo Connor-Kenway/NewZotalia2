@@ -18,6 +18,7 @@ export const signUp = async (data) => {
 
     const response = await signInApi.post('/token', formData);
     const { access_token } = response.data;
+    console.log('access_token', access_token)
     setAuthToken(access_token);
     await AsyncStorage.setItem('access_token', access_token);
     console.log('success', access_token)
