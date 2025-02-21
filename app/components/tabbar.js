@@ -14,8 +14,8 @@ export default function TabBar() {
   const pathname = usePathname(); // For active tab highlighting
 
   const tabs = [
-    { icon: searchIcon, path: '/search', label: 'Search' },
-    { icon: financeIcon, path: '/finance', label: 'Finance' },
+    { icon: searchIcon, path: '/gig-worker/gigworker-search', label: 'Search' },
+    { icon: financeIcon, path: '/gig-worker/gigworker-finance', label: 'Finance' },
     { icon: homeIcon, path: '/gig-worker/gigworker-homepage', label: 'Home' },
     { icon: messageIcon, path: '/messaging', label: 'Messages' },
     { icon: profileIcon, path: '/profile', label: 'Profile' },
