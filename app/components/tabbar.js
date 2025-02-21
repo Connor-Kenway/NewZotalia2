@@ -34,7 +34,7 @@ export default function TabBar() {
             style={styles.tab}
             onPress={() => router.push(tab.path)}
           >
-            <Image source={tab.icon} style={[styles.icon, { tintColor: iconTintColor }]} />
+            <Image source={tab.icon} style={[styles.icon]} />
             <Text style={[styles.label, { color: iconTintColor }]}>{tab.label}</Text>
           </TouchableOpacity>
         );
