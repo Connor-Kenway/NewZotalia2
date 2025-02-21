@@ -1,4 +1,5 @@
 import { signInApi, setAuthToken, api } from './index';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const signUp = async (data) => {
     console.log(data)
@@ -18,11 +19,14 @@ export const signUp = async (data) => {
     const response = await signInApi.post('/token', formData);
     const { access_token } = response.data;
     setAuthToken(access_token);
-    console.log('success')
+    await AsyncStorage.setItem('access_token', access_token);
+    console.log('success', access_token)
     return response.data;
   };
   
   export const signOut = async () => {
     await api.post('/signout');
     setAuthToken(null);
+    await AsyncStorage.removeItem('access_token');
+    await AsyncStorage.removeItem('userType');
   };

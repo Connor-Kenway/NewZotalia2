@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { api } from "../../src/services/index";
+import { jwtDecode } from "jwt-decode";
 
 export default function ClientProfileInfo() {
   const router = useRouter();
@@ -10,28 +11,52 @@ export default function ClientProfileInfo() {
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState(null);
 
-
+  useEffect(() => {
+    const getUserId = async () => {
+      console.log("Getting user ID from token...");
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        console.log('pausing on the awiat')
+        console.log(token)
+        if (token) {
+          const decodedToken = jwtDecode(token);
+          console.log("Decoded token:", decodedToken);
+          setUserId(decodedToken.sub);
+        }
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    };
+    getUserId();
+  }, []);
+  
   const handleSubmit = async () => {
     try {
-
-      //getting profile_id to kink to employer table
-      const profile_id = await api.get("/profiles").;
       // Store details (in a real app, you might send to a backend)
-      const profileData = { 
+  
+
+      const employer_profileData = { 
         //client_id auto generated
         created_at: new Date().toISOString(),
-        user_id: 
+        user_id: userId,
         company_name: companyName, 
         company_description: description,
+        //company_rating is out of 5
         company_rating: 0,
+        //dont' worry about this number
         individual_ratings:0
       };
       //calling api
-      console.log(api)
-     const response = await api.post("/employers", profileData);
-      cosole.log(response)
+      const profileData_id = {
+        id: userId
+      }
 
-      await AsyncStorage.setItem("clientProfile", JSON.stringify(profileData));
+      //have to setup base profile schema before the employer schema can reference it
+      const profiles_response = await api.post("/profiles/", profileData_id);
+      //once profiles id is set, the employers table can reference the profile id
+     const employers_response = await api.post("/employers/", employer_profileData);
+
+      await AsyncStorage.setItem("clientProfile", JSON.stringify(employer_profileData));
 
       // Navigate to the next screen
       router.push("/client/client-profile-pic");
