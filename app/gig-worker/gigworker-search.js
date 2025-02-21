@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image } from "react-native";
 import { useRouter } from "expo-router";
+import TabBar from '../components/tabbar';
 
 // Dummy data for now (replace with your backend data)
 const dummyGigs = [
@@ -90,6 +91,8 @@ export default function GigSearch() {
         renderItem={renderGigItem}
         contentContainerStyle={styles.listContent}
       />
+
+    <TabBar />
     </View>
   );
 }

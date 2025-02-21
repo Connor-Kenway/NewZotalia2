@@ -16,7 +16,7 @@ export default function TabBar() {
   const tabs = [
     { icon: searchIcon, path: '/search', label: 'Search' },
     { icon: financeIcon, path: '/finance', label: 'Finance' },
-    { icon: homeIcon, path: '/', label: 'Home' },
+    { icon: homeIcon, path: '/gig-worker/gigworker-homepage', label: 'Home' },
     { icon: messageIcon, path: '/messaging', label: 'Messages' },
     { icon: profileIcon, path: '/profile', label: 'Profile' },
   ];
