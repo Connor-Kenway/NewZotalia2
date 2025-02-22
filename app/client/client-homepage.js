@@ -1,16 +1,19 @@
 import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import TabBar from '../components/tabbar';
+import SwitchRoleButton from '../components/toggleUser';
 
 const GigWorkerHomePage = () => {
   return (
-    <div style={styles.page}>
-      <div style={styles.feedArea}>
-        <div style={styles.placeholder}>
-          <p style={{ color: '#999' }}>Client Homepage</p>
-        </div>
-      </div>
+    <View style={styles.container}>
+        <SwitchRoleButton />
+      <View style={styles.feedArea}>
+        <View style={styles.placeholder}>
+          <Text style={{ color: '#999' }}>Gig Worker Homepage</Text>
+        </View>
+      </View>
       <TabBar />
-    </div>
+    </View>
   );
 };
 

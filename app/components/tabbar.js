@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
+import { useUser } from '../../src/context/UserContext'; // or wherever
 
-// Import icons as require statements or URIs:
+// Import icons
 const homeIcon = require('../assets/icons/home-icon.png');
 const searchIcon = require('../assets/icons/search-icon.png');
 const financeIcon = require('../assets/icons/finance-icon.png');
@@ -11,20 +12,14 @@ const profileIcon = require('../assets/icons/profile-icon.png');
 
 export default function TabBar() {
   const router = useRouter();
-  const pathname = usePathname(); // For active tab highlighting
+  const pathname = usePathname();
+  const { userType } = useUser() || {}; // e.g. "gig-worker" or "client"
 
-  const tabs = [
-    { icon: searchIcon, path: '/gig-worker/gigworker-search', label: 'Search' },
-    { icon: financeIcon, path: '/gig-worker/gigworker-finance', label: 'Finance' },
-    { icon: homeIcon, path: '/gig-worker/gigworker-homepage', label: 'Home' },
-    { icon: messageIcon, path: '/messaging', label: 'Messages' },
-    { icon: profileIcon, path: '/profile', label: 'Profile' },
-  ];
+  const tabs = getTabs(userType || "gig-worker");
 
   return (
     <View style={styles.container}>
       {tabs.map((tab, index) => {
-        // If you want active color for the current route:
         const isActive = pathname === tab.path;
         const iconTintColor = isActive ? '#6A1B9A' : '#BDBDBD';
 
@@ -43,6 +38,27 @@ export default function TabBar() {
   );
 }
 
+function getTabs(userType) {
+  if (userType === "gig-worker") {
+    return [
+      { icon: searchIcon, path: '/gig-worker/gigworker-search', label: 'Search' },
+      { icon: financeIcon, path: '/gig-worker/gigworker-finance', label: 'Finance' },
+      { icon: homeIcon, path: '/gig-worker/gigworker-homepage', label: 'Home' },
+      { icon: messageIcon, path: '/messaging', label: 'Messages' },
+      { icon: profileIcon, path: '/gig-worker/gigworker-profile', label: 'Profile' },
+    ];
+  } else {
+    // client
+    return [
+      { icon: searchIcon, path: '/client/client-search', label: 'Search' },
+      { icon: financeIcon, path: '/client/client-finance', label: 'Finance' },
+      { icon: homeIcon, path: '/client/client-homepage', label: 'Home' },
+      { icon: messageIcon, path: '/messaging', label: 'Messages' },
+      { icon: profileIcon, path: '/profile', label: 'Profile' },
+    ];
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
@@ -57,7 +73,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: '#bbb',
-    // Replace boxShadow with RN shadow + elevation
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
@@ -72,7 +87,6 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     marginBottom: 2,
-    // tintColor is set dynamically above if you want active/inactive color
   },
   label: {
     fontSize: 12,

@@ -1,7 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from "react-native";
-// If you have an actual chart library or icon, you can import it here
-// For now, we'll use a placeholder circle
 import TabBar from "../components/tabbar";
 
 export default function GigWorkerFinance() {
@@ -38,7 +36,7 @@ export default function GigWorkerFinance() {
       <View style={styles.currentGigCard}>
         <Text style={styles.currentGigTitle}>Current Gig: Programming</Text>
         <Text style={styles.currentGigDesc}>
-          You’re earning $43/hr with this gig! You could be earning more to reach your goals
+          You’re earning $170 with this gig! You could be earning more to reach your goals
         </Text>
       </View>
 
