@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker"; // For picking images from device library
+
 import { useRouter } from "expo-router"; // Expo Router for navigation
+import { imageApi } from "../../src/services/index"; // Axios instance for API calls
+import { uploadProfilePicture } from "../../src/services/profilePictureService";
 
 export default function ClientProfilePic() {
   const router = useRouter();
@@ -27,10 +30,30 @@ export default function ClientProfilePic() {
     }
   };
 
+
+
   // Similar to handleSubmit in web
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+
+
     // In a real app, you might store the selected image URI in AsyncStorage or context
-    router.push("/client/client-homepage"); // Navigate to confirm page
+    try{
+      console.log("Selected image:", image);
+      const response = await uploadProfilePicture(image) // Send image to server
+      console.log(response.data);
+      if (response.success===false) {
+        console.error("Failed to upload employer profile picture", response);
+        alert("Failed to set up employer profile");
+        return;
+      }
+      router.push("/client/client-homepage"); // Navigate to confirm page
+      
+    }
+    catch( error){
+      console.error("Failed to upload image:", error);
+    }
+    
+
   };
 
   return (
