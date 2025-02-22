@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { api } from "../../src/services/index";
 import { jwtDecode } from "jwt-decode";
+import { employerProfileSetup, EmployerProfile} from "../../src/services/employerProfileService";
 
 export default function ClientProfileInfo() {
   const router = useRouter();
@@ -33,26 +34,28 @@ export default function ClientProfileInfo() {
   const handleSubmit = async () => {
     try {
       // Store details (in a real app, you might send to a backend)
-  
-
-      const employer_profileData = { 
-        //client_id auto generated
-        created_at: new Date().toISOString(),
+      //as of now only this is passed into async local storage instead of
+      //the entire employerprofile. maybe we can chaange later
+      const employer_profile_data = {
         user_id: userId,
-        company_name: companyName, 
+        company_name: companyName,
         company_description: description,
-        //company_rating is out of 5
-        company_rating: 0,
-        //dont' worry about this number
-        individual_ratings:0
       };
-
-
       
-      //once profiles id is set, the employers table can reference the profile id
-     const employers_response = await api.post("/employers/", employer_profileData);
+      const employerProfile = new EmployerProfile(
+        employer_profile_data.user_id,
+        employer_profile_data.company_name,
+        employer_profile_data.company_description
+      );
 
-      await AsyncStorage.setItem("clientProfile", JSON.stringify(employer_profileData));
+      const response = await employerProfileSetup(employerProfile);
+      if (!response.success) {
+        console.error("Failed to set up employer profile:", response);
+        alert("Failed to set up employer profile");
+        return;
+      }
+
+      await AsyncStorage.setItem("clientProfile", JSON.stringify(employer_profile_data));
 
       // Navigate to the next screen
       router.push("/client/client-profile-pic");
