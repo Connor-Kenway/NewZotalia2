@@ -49,7 +49,7 @@ export default function ClientProfileInfo() {
       );
 
       const response = await employerProfileSetup(employerProfile);
-      if (!response.success) {
+      if (response.success===false) {
         console.error("Failed to set up employer profile:", response);
         alert("Failed to set up employer profile");
         return;

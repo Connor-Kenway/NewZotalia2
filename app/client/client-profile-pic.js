@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker"; // For picking images from device library
-import * as ImageManipulator from "expo-image-manipulator"; // For compressing images
+
 import { useRouter } from "expo-router"; // Expo Router for navigation
 import { imageApi } from "../../src/services/index"; // Axios instance for API calls
+import { uploadProfilePicture } from "../../src/services/profilePictureService";
 
 export default function ClientProfilePic() {
   const router = useRouter();
@@ -28,46 +29,25 @@ export default function ClientProfilePic() {
       console.error("Failed to pick image:", error);
     }
   };
-  const compressImage = async (uri) => {
-    try {
-      const manipulatedImage = await ImageManipulator.manipulateAsync(
-        uri,
-        [{ resize: { width: 800 } }], // Resize the image to a width of 800px
-        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG } // Compress the image to 70% quality
-      );
-      return manipulatedImage.uri;
-    } catch (error) {
-      console.error("Failed to compress image:", error);
-      return uri; // Return the original URI if compression fails
-    }
-  };
 
-  // Extract filename and MIME type from URI
-  const getFileNameAndType = (uri) => {
-    const filename = uri.split('/').pop();
-    const match = /\.(\w+)$/.exec(filename);
-    const type = match ? `image/${match[1]}` : `image`;
-    return { filename, type };
-  };
+
 
   // Similar to handleSubmit in web
   const handleSubmit = async () => {
 
-    const compressedImageUri = await compressImage(image);
-    const { filename, type } = getFileNameAndType(compressedImageUri);
-    const formData = new FormData();
-    formData.append("file", {
-      uri: compressedImageUri,
-      name: filename,
-      type: type,
-    });
+
     // In a real app, you might store the selected image URI in AsyncStorage or context
     try{
       console.log("Selected image:", image);
-      const response = await imageApi.post("/profiles/upload-avatar", formData); // Send image to server
+      const response = await uploadProfilePicture(image) // Send image to server
       console.log(response.data);
+      if (response.success===false) {
+        console.error("Failed to upload employer profile picture", response);
+        alert("Failed to set up employer profile");
+        return;
+      }
       router.push("/client/client-homepage"); // Navigate to confirm page
- 
+      
     }
     catch( error){
       console.error("Failed to upload image:", error);
