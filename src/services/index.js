@@ -10,6 +10,12 @@ export const api = axios.create({
   },
 });
 
+export const imageApi = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  },
+});
 
 export const signInApi = axios.create({
     baseURL: API_URL,
