@@ -5,7 +5,7 @@ import * as ImagePicker from "expo-image-picker"; // For picking images from dev
 import { useRouter } from "expo-router"; // Expo Router for navigation
 import { imageApi } from "../../src/services/index"; // Axios instance for API calls
 import { uploadProfilePicture } from "../../src/services/profilePictureService";
-import ProfilePicture from "../../components/ProfilePicture"; // Import the ProfilePicture component
+import ProfilePicture from "../components/ProfilePicture"; // Import the ProfilePicture component
 
 export default function ClientProfilePic() {
   const router = useRouter();
