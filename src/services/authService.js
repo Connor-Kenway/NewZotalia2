@@ -31,3 +31,4 @@ export const signUp = async (data) => {
     await AsyncStorage.removeItem('access_token');
     await AsyncStorage.removeItem('userType');
   };
+  
