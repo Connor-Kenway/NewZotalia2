@@ -5,70 +5,39 @@ import * as ImagePicker from "expo-image-picker"; // For picking images from dev
 import { useRouter } from "expo-router"; // Expo Router for navigation
 import { imageApi } from "../../src/services/index"; // Axios instance for API calls
 import { uploadProfilePicture } from "../../src/services/profilePictureService";
+import ProfilePicture from "../components/ProfilePicture"; // Import the ProfilePicture component
 
 export default function ClientProfilePic() {
   const router = useRouter();
   const [image, setImage] = useState(null);
 
-  // Similar to handleImageChange in web, but uses expo-image-picker
-  const pickImage = async () => {
-    try {
-      // Request permission & open image library
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-
-      if (!result.canceled && result.assets?.length) {
-        // result.assets is an array of selected images
-        setImage(result.assets[0].uri);
-      }
-    } catch (error) {
-      console.error("Failed to pick image:", error);
-    }
-  };
-
-
-
-  // Similar to handleSubmit in web
   const handleSubmit = async () => {
+    if (!image) {
+      console.error("No image selected");
+      return;
+    }
 
-
-    // In a real app, you might store the selected image URI in AsyncStorage or context
-    try{
+    try {
       console.log("Selected image:", image);
-      const response = await uploadProfilePicture(image) // Send image to server
+      const response = await uploadProfilePicture(image); // Send image to server
       console.log(response.data);
-      if (response.success===false) {
+      if (response.success === false) {
         console.error("Failed to upload employer profile picture", response);
         alert("Failed to set up employer profile");
         return;
       }
       router.push("/client/client-homepage"); // Navigate to confirm page
-      
-    }
-    catch( error){
+    } catch (error) {
       console.error("Failed to upload image:", error);
     }
-    
-
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Upload Profile Picture</Text>
 
-      {/* Button to pick an image */}
-      <TouchableOpacity onPress={pickImage} style={styles.pickButton}>
-        <Text style={styles.pickButtonText}>Pick an Image</Text>
-      </TouchableOpacity>
+      <ProfilePicture onImagePicked={setImage} /> {/* Use the ProfilePicture component */}
 
-      {/* Preview the selected image */}
-      {image && <Image source={{ uri: image }} style={styles.imagePreview} />}
-
-      {/* Next step button */}
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>
         <Text style={styles.buttonText}>→</Text>
       </TouchableOpacity>
@@ -89,23 +58,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     marginBottom: 20,
-  },
-  pickButton: {
-    marginBottom: 20,
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 8,
-  },
-  pickButtonText: {
-    color: "#fff",
-    fontSize: 16,
-  },
-  imagePreview: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 15,
-    resizeMode: "cover",
   },
   button: {
     marginTop: 15,
