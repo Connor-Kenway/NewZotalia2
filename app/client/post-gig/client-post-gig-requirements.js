@@ -306,6 +306,11 @@ const styles = StyleSheet.create({
   },
   dateButton: {
     justifyContent: "center",
+    width: "48%",
+    backgroundColor: "#f8f8f8",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
   },
   dateText: {
     color: "#333",

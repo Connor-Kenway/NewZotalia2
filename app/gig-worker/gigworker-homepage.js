@@ -29,7 +29,7 @@ const styles = {
   feedArea: {
     flex: 1,
     overflowY: 'auto',
-    marginBottom: '70px', // Leave space for TabBar
+    marginBottom: '70px',
     padding: '20px',
     backgroundColor: '#f8f8f8',
   },
@@ -37,10 +37,10 @@ const styles = {
     flex: 1,
     backgroundColor: '#e0e0e0',
     borderRadius: '8px',
-    height: '800px', // Just a tall placeholder
+    height: '800px',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'bottom',
   },
 };
 
