@@ -50,7 +50,7 @@ function getTabs(userType) {
   } else {
     // client
     return [
-      { icon: searchIcon, path: '/client/client-search', label: 'Search' },
+      { icon: searchIcon, path: '/client/post-gig/client-gig-post', label: 'Search' },
       { icon: financeIcon, path: '/client/client-finance', label: 'Finance' },
       { icon: homeIcon, path: '/client/client-homepage', label: 'Home' },
       { icon: messageIcon, path: '/messaging', label: 'Messages' },
