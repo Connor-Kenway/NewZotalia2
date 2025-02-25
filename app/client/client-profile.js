@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
+import TabBar from '../components/tabbar';
 
 // Stub (replace with your actual images)
 const sampleProfileImage = require('../assets/images/profile-picture.png');
@@ -86,6 +87,8 @@ export default function ClientProfile() {
       <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
         <Text style={styles.signOutText}>Sign Out</Text>
       </TouchableOpacity>
+
+      <TabBar />
     </View>
   );
 }
