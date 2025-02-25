@@ -54,7 +54,7 @@ function getTabs(userType) {
       { icon: financeIcon, path: '/client/client-finance', label: 'Finance' },
       { icon: homeIcon, path: '/client/client-homepage', label: 'Home' },
       { icon: messageIcon, path: '/messaging', label: 'Messages' },
-      { icon: profileIcon, path: '/profile', label: 'Profile' },
+      { icon: profileIcon, path: '/client/client-profile', label: 'Profile' },
     ];
   }
 }
