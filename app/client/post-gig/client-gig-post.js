@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import TabBar from "../../components/tabbar";
+
 
 export default function ClientPostGig() {
   const router = useRouter();
@@ -17,6 +19,7 @@ export default function ClientPostGig() {
       <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
         <Text style={styles.nextText}>Next</Text>
       </TouchableOpacity>
+      <TabBar/>
     </View>
   );
 }

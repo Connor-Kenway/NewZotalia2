@@ -2,6 +2,8 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import TabBar from "../../components/tabbar";
+
 
 export default function ClientPostGigConfirm() {
   const router = useRouter();
@@ -23,6 +25,8 @@ export default function ClientPostGigConfirm() {
       <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
         <Text style={styles.confirmText}>Confirm</Text>
       </TouchableOpacity>
+
+        <TabBar/>
     </View>
   );
 }
