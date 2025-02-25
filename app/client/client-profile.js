@@ -3,8 +3,8 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react
 import { useRouter } from 'expo-router';
 
 // Stub (replace with your actual images)
-// const sampleProfileImage = require('../../assets/images/sample-user.jpg');
-// const editIcon = require('../../assets/icons/edit-icon.png');
+const sampleProfileImage = require('../assets/images/profile-picture.png');
+const editIcon = require('../assets/icons/edit-icon.png');
 
 export default function ClientProfile() {
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function ClientProfile() {
     // e.g., remove tokens from AsyncStorage, router.replace("/auth"), etc.
   };
 
-  // Placeholder data for "Past Posted Gigs"
+  // Placeholder data for "Past Posted Gigs" (remove and replace with actual data)
   const pastGigs = [
     { id: '1', name: "Website Development", description: "Lorem ipsum dolor sit amet..." },
     { id: '2', name: "Chatbot Implementation", description: "Lorem ipsum dolor sit amet..." },
@@ -46,10 +46,10 @@ export default function ClientProfile() {
       <View style={styles.profileSection}>
         <View style={styles.imageWrapper}>
           {/* Profile Image */}
-          {/* <Image source={sampleProfileImage} style={styles.profileImage} /> */}
+          <Image source={sampleProfileImage} style={styles.profileImage} />
           {/* Edit Icon Overlapping */}
           <TouchableOpacity style={styles.editIconWrapper} onPress={handleChangeProfile}>
-            {/* <Image source={editIcon} style={styles.editIcon} /> */}
+            <Image source={editIcon} style={styles.editIcon} />
           </TouchableOpacity>
         </View>
 
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 50, // or use SafeAreaView
+    paddingTop: 50,
   },
   title: {
     fontSize: 16,
@@ -127,9 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   editIcon: {
-    width: 18,
-    height: 18,
-    tintColor: '#fff',
+
   },
   name: {
     fontSize: 18,
