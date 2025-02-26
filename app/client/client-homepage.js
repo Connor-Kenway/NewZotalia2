@@ -66,7 +66,7 @@ export default function GigWorkerHomePage() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Gigs for you</Text>
+        <Text style={styles.headerTitle}>Gig Workers for you</Text>
         <View style={styles.profileIconWrapper}>
           <Image
             source={require('../assets/icons/profile-icon.png')} // example icon
@@ -134,12 +134,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 70,
   },
   // Card
   card: {
-    // flex: 1,
-    width: 353,
-    height: 650,
+    flex: 1,
+    // width: 353,
+    // height: 650,
     borderColor: 'blue',
     borderWidth: 1,
     borderRadius: 10,

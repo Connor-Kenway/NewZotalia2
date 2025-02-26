@@ -1,92 +1,92 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useUser } from "../../src/context/UserContext";
 import TabBar from '../components/tabbar';
 
-// Stub (replace with your actual images)
 const sampleProfileImage = require('../assets/images/profile-picture.png');
 const editIcon = require('../assets/icons/edit-icon.png');
 
 export default function ClientProfile() {
   const router = useRouter();
+  const { userType, setUserType } = useUser();
 
-  // Handler for changing profile details (edit info, etc.)
   const handleChangeProfile = () => {
     console.log("Change profile pressed");
-    // e.g., router.push("/client/edit-profile") if you have a screen for editing
+    // e.g., router.push("/client/edit-profile");
   };
 
-  // Handler for sign-out
   const handleSignOut = () => {
     console.log("Sign out pressed");
-    // e.g., remove tokens from AsyncStorage, router.replace("/auth"), etc.
+    // e.g., remove tokens, router.replace("/auth");
   };
 
-  // Placeholder data for "Past Posted Gigs" (remove and replace with actual data)
+  // Switch to gig worker
+  const handleSwitchToGigWorker = () => {
+    setUserType("gig-worker");
+    router.replace("/gig-worker/gigworker-homepage");
+  };
+
   const pastGigs = [
-    { id: '1', name: "Website Development", description: "Lorem ipsum dolor sit amet..." },
-    { id: '2', name: "Chatbot Implementation", description: "Lorem ipsum dolor sit amet..." },
+    { id: '1', name: "Website Development", description: "Lorem ipsum..." },
+    { id: '2', name: "Chatbot Implementation", description: "Lorem ipsum..." },
   ];
 
-  // Renders each gig item
   const renderGigItem = ({ item }) => (
     <View style={styles.gigItem}>
       <Text style={styles.gigName}>{item.name}</Text>
-      <Text style={styles.gigDesc} numberOfLines={1}>
-        {item.description}
-      </Text>
+      <Text style={styles.gigDesc} numberOfLines={1}>{item.description}</Text>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      {/* Title */}
-      <Text style={styles.title}>Your Profile</Text>
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
+        
+        <Text style={styles.title}>Your Profile (Client)</Text>
 
-      {/* Profile Section */}
-      <View style={styles.profileSection}>
-        <View style={styles.imageWrapper}>
-          {/* Profile Image */}
-          <Image source={sampleProfileImage} style={styles.profileImage} />
-          {/* Edit Icon Overlapping */}
-          <TouchableOpacity style={styles.editIconWrapper} onPress={handleChangeProfile}>
-            <Image source={editIcon} style={styles.editIcon} />
+        <View style={styles.profileSection}>
+          <View style={styles.imageWrapper}>
+            <Image source={sampleProfileImage} style={styles.profileImage} />
+            <TouchableOpacity style={styles.editIconWrapper} onPress={handleChangeProfile}>
+              <Image source={editIcon} style={styles.editIcon} />
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.name}>Angelica Jackson</Text>
+          <Text style={styles.role}>Recruiter</Text>
+
+          <TouchableOpacity onPress={handleChangeProfile}>
+            <Text style={styles.changeProfileText}>Change profile</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Name + Role */}
-        <Text style={styles.name}>Angelica Jackson</Text>
-        <Text style={styles.role}>Recruiter</Text>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoHeader}>Displays:</Text>
+          <Text style={styles.infoItem}>• Category/Industry</Text>
+          <Text style={styles.infoItem}>• Reviews</Text>
+          <Text style={styles.infoItem}>• Followers + Following</Text>
+        </View>
 
-        {/* "Change profile" link */}
-        <TouchableOpacity onPress={handleChangeProfile}>
-          <Text style={styles.changeProfileText}>Change profile</Text>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoHeader}>Past Posted Gigs</Text>
+          <FlatList
+            data={pastGigs}
+            keyExtractor={(item) => item.id}
+            renderItem={renderGigItem}
+            contentContainerStyle={{ paddingVertical: 5 }}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.switchButton} onPress={handleSwitchToGigWorker}>
+          <Text style={styles.switchText}>Switch to Gig Worker</Text>
         </TouchableOpacity>
-      </View>
 
-      {/* Displays Section */}
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoHeader}>Displays:</Text>
-        <Text style={styles.infoItem}>• Category/Industry</Text>
-        <Text style={styles.infoItem}>• Reviews</Text>
-        <Text style={styles.infoItem}>• Followers + Following</Text>
-      </View>
-
-      {/* Past Posted Gigs Section */}
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoHeader}>Past Posted Gigs</Text>
-        <FlatList
-          data={pastGigs}
-          keyExtractor={(item) => item.id}
-          renderItem={renderGigItem}
-          contentContainerStyle={{ paddingVertical: 5 }}
-        />
-      </View>
-
-      {/* Sign Out Button */}
-      <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-        <Text style={styles.signOutText}>Sign Out</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
+          <Text style={styles.signOutText}>Sign Out</Text>
+        </TouchableOpacity>
+      
+      </ScrollView>
 
       <TabBar />
     </View>
@@ -94,10 +94,12 @@ export default function ClientProfile() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+  container: { flex: 1, backgroundColor: '#fff' },
+  scroll: { flex: 1 },
+  scrollContent: {
     paddingTop: 50,
+    paddingBottom: 100,
+    alignItems: 'center',
   },
   title: {
     fontSize: 16,
@@ -110,14 +112,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  imageWrapper: {
-    position: 'relative',
-  },
-  profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-  },
+  imageWrapper: { position: 'relative' },
+  profileImage: { width: 120, height: 120, borderRadius: 60 },
   editIconWrapper: {
     position: 'absolute',
     bottom: 0,
@@ -129,9 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  editIcon: {
-
-  },
+  editIcon: { width: 18, height: 18, tintColor: '#fff' },
   name: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -149,7 +143,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   infoContainer: {
-    marginHorizontal: 20,
+    width: '90%',
     marginBottom: 15,
   },
   infoHeader: {
@@ -175,23 +169,28 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
   },
-  gigName: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 2,
-    color: '#333',
+  gigName: { fontSize: 14, fontWeight: 'bold', marginBottom: 2, color: '#333' },
+  gigDesc: { fontSize: 12, color: '#777' },
+  switchButton: {
+    backgroundColor: "#6A1B9A",
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginTop: 20,
+    alignSelf: "center",
   },
-  gigDesc: {
-    fontSize: 12,
-    color: '#777',
+  switchText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
   },
   signOutButton: {
-    alignSelf: 'center',
-    marginTop: 20,
     backgroundColor: '#6A1B9A',
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 10,
+    alignSelf: 'center',
+    marginTop: 20,
   },
   signOutText: {
     color: '#fff',
