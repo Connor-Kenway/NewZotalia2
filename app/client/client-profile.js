@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useUser } from "../../src/context/UserContext";
 import TabBar from '../components/tabbar';
@@ -11,27 +11,31 @@ export default function ClientProfile() {
   const router = useRouter();
   const { userType, setUserType } = useUser();
 
-  const handleChangeProfile = () => {
-    console.log("Change profile pressed");
-    // e.g., router.push("/client/edit-profile");
-  };
-
-  const handleSignOut = () => {
-    console.log("Sign out pressed");
-    // e.g., remove tokens, router.replace("/auth");
-  };
-
   // Switch to gig worker
   const handleSwitchToGigWorker = () => {
     setUserType("gig-worker");
     router.replace("/gig-worker/gigworker-homepage");
   };
 
+  // Sign out
+  const handleSignOut = () => {
+    console.log("Sign out pressed");
+    // e.g., remove tokens, router.replace("/auth");
+  };
+
+  // Navigate to edit profile
+  const handleChangeProfile = () => {
+    console.log("Change profile pressed");
+    // e.g., router.push("/client/edit-profile");
+  };
+
+  // Gigs data
   const pastGigs = [
     { id: '1', name: "Website Development", description: "Lorem ipsum..." },
     { id: '2', name: "Chatbot Implementation", description: "Lorem ipsum..." },
   ];
 
+  // Render each gig item
   const renderGigItem = ({ item }) => (
     <View style={styles.gigItem}>
       <Text style={styles.gigName}>{item.name}</Text>
@@ -39,12 +43,13 @@ export default function ClientProfile() {
     </View>
   );
 
-  return (
-    <View style={styles.container}>
-      <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
-        
+  // Header for the FlatList
+  const renderHeader = () => {
+    return (
+      <View style={{ alignItems: 'center', marginBottom: 20 }}>
         <Text style={styles.title}>Your Profile (Client)</Text>
 
+        {/* Profile Section */}
         <View style={styles.profileSection}>
           <View style={styles.imageWrapper}>
             <Image source={sampleProfileImage} style={styles.profileImage} />
@@ -61,6 +66,7 @@ export default function ClientProfile() {
           </TouchableOpacity>
         </View>
 
+        {/* Displays Section */}
         <View style={styles.infoContainer}>
           <Text style={styles.infoHeader}>Displays:</Text>
           <Text style={styles.infoItem}>• Category/Industry</Text>
@@ -68,37 +74,47 @@ export default function ClientProfile() {
           <Text style={styles.infoItem}>• Followers + Following</Text>
         </View>
 
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoHeader}>Past Posted Gigs</Text>
-          <FlatList
-            data={pastGigs}
-            keyExtractor={(item) => item.id}
-            renderItem={renderGigItem}
-            contentContainerStyle={{ paddingVertical: 5 }}
-          />
-        </View>
-
+        {/* "Switch to Gig Worker" Button */}
         <TouchableOpacity style={styles.switchButton} onPress={handleSwitchToGigWorker}>
           <Text style={styles.switchText}>Switch to Gig Worker</Text>
         </TouchableOpacity>
 
+        {/* Sign Out Button */}
         <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
-      
-      </ScrollView>
 
+        {/* "Past Posted Gigs" label, so user sees the heading above the list */}
+        <View style={{ width: '90%', marginTop: 20 }}>
+          <Text style={styles.infoHeader}>Past Posted Gigs</Text>
+        </View>
+      </View>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={pastGigs}
+        keyExtractor={(item) => item.id}
+        renderItem={renderGigItem}
+        ListHeaderComponent={renderHeader}
+        contentContainerStyle={styles.listContent}
+      />
+
+      {/* TabBar pinned at bottom */}
       <TabBar />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  scroll: { flex: 1 },
-  scrollContent: {
-    paddingTop: 50,
-    paddingBottom: 100,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  listContent: {
+    paddingBottom: 100, // Enough space so last items not hidden behind TabBar
     alignItems: 'center',
   },
   title: {
@@ -144,7 +160,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     width: '90%',
-    marginBottom: 15,
+    marginTop: 15,
   },
   infoHeader: {
     fontWeight: 'bold',
@@ -158,19 +174,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 2,
   },
-  gigItem: {
-    backgroundColor: '#f8f8f8',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  gigName: { fontSize: 14, fontWeight: 'bold', marginBottom: 2, color: '#333' },
-  gigDesc: { fontSize: 12, color: '#777' },
   switchButton: {
     backgroundColor: "#6A1B9A",
     borderRadius: 20,
@@ -197,4 +200,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
+  gigItem: {
+    width: '90%',
+    backgroundColor: '#f8f8f8',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  gigName: { fontSize: 14, fontWeight: 'bold', marginBottom: 2, color: '#333' },
+  gigDesc: { fontSize: 12, color: '#777' },
 });
