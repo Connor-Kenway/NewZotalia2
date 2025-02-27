@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { useUser } from "../../src/context/UserContext";
 import TabBar from '../components/tabbar';
 
-const sampleProfileImage = require('../assets/images/profile-picture.png');
+const sampleProfileImage = require('../assets/images/JohnDoeProfile.png');
 const editIcon = require('../assets/icons/edit-icon.png');
 
 export default function ClientProfile() {
@@ -134,14 +134,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    backgroundColor: '#ff6f61',
     width: 30,
     height: 30,
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  editIcon: { width: 18, height: 18, tintColor: '#fff' },
+  editIcon: { 
+    width: 30, 
+    height: 30,
+  },
   name: {
     fontSize: 18,
     fontWeight: 'bold',

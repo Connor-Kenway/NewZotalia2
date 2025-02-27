@@ -4,8 +4,8 @@ import { useRouter } from 'expo-router';
 import { useUser } from "../../src/context/UserContext";
 import TabBar from '../components/tabbar';
 
-// const sampleProfileImage = require('../../assets/images/sample-user.jpg');
-// const editIcon = require('../../assets/icons/edit-icon.png');
+  const sampleProfileImage = require('../assets/images/profile-picture.png');
+  const editIcon = require('../assets/icons/edit-icon.png');
 
 export default function GigWorkerProfile() {
   const router = useRouter();
@@ -37,9 +37,9 @@ export default function GigWorkerProfile() {
         {/* Profile Section */}
         <View style={styles.profileSection}>
           <View style={styles.imageWrapper}>
-            {/* <Image source={sampleProfileImage} style={styles.profileImage} /> */}
+            <Image source={sampleProfileImage} style={styles.profileImage} />
             <TouchableOpacity style={styles.editIconWrapper} onPress={handleChangeProfile}>
-              {/* <Image source={editIcon} style={styles.editIcon} /> */}
+              <Image source={editIcon} style={styles.editIcon} />
             </TouchableOpacity>
           </View>
 
@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    backgroundColor: '#ff6f61',
     width: 30,
     height: 30,
     borderRadius: 15,
@@ -128,9 +127,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   editIcon: {
-    width: 18,
-    height: 18,
-    tintColor: '#fff',
+    width: 30,
+    height: 30,
   },
   name: {
     fontSize: 18,
