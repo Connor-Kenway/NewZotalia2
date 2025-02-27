@@ -102,7 +102,6 @@ export default function ClientProfile() {
         contentContainerStyle={styles.listContent}
       />
 
-      {/* TabBar pinned at bottom */}
       <TabBar />
     </View>
   );
@@ -112,9 +111,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingTop: 50,
   },
   listContent: {
-    paddingBottom: 100, // Enough space so last items not hidden behind TabBar
+    paddingBottom: 100,
     alignItems: 'center',
   },
   title: {

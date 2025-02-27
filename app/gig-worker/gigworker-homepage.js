@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 70, // space above TabBar
+    marginBottom: 100,
   },
   // Card
   card: {

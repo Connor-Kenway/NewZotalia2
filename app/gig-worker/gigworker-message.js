@@ -25,7 +25,7 @@ export default function ClientMessage() {
   const router = useRouter();
 
   const handlePressConversation = (conversationId) => {
-    router.push(`/client/client-message-chat`); // /${conversationId}
+    router.push(`/gig-worker/gigworker-message-chat`); // /${conversationId}
   };
 
   const renderConversationItem = ({ item }) => {
