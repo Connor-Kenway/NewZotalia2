@@ -81,16 +81,16 @@ export default function GigWorkerProfile() {
         {/* Displays Section */}
         <View style={styles.infoContainer}>
         <Text style={styles.infoHeader}>Displays:</Text>
-          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/top-field-of-work')}>
+          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/top-field-of-work')}>
             <Text style={styles.infoItem}>• Top Field of Work</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/resume-portfolio')}>
+          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/resume-portfolio')}>
             <Text style={styles.infoItem}>• Resume/Built-in portfolio</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/reviews')}>
+          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/reviews')}>
             <Text style={styles.infoItem}>• Reviews</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/followers-following')}>
+          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/followers-following')}>
             <Text style={styles.infoItem}>• Followers + Following</Text>
           </TouchableOpacity>
         </View>
