@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image } from "react-native";
 import { useRouter } from "expo-router";
 import TabBar from '../components/tabbar';
+import { fetchGigs } from "../../src/services/gigService";
 
 // Dummy data for now (replace with your backend data)
 const dummyGigs = [
@@ -28,8 +29,26 @@ const dummyGigs = [
 
 export default function GigSearch() {
   const router = useRouter();
+  const [gigs, setGigs] = useState([]);
   const [searchText, setSearchText] = useState("");
 
+  useEffect(() => {
+    const loadGigs = async () => {
+      console.log('hitting use effect')
+      const response = await fetchGigs();
+      console.log('after response')
+      if (response.success !== false) {
+        setGigs(response);
+        // setFilteredGigs(response);
+        console.log('success')
+      } else {
+        console.log('failed')
+        console.error(response.message);
+      }
+    };
+
+    loadGigs();
+  }, []);
   // Filter button press
   const handleFilter = () => {
     // open filter modal or navigate to filter screen
@@ -37,24 +56,27 @@ export default function GigSearch() {
   };
 
   // Navigate to detailed gig listing
-  const handleGigPress = (gigId) => {
-    // e.g. router.push(`/gig-worker/detail/${gigId}`)
-    // For now, just log
-    console.log("Gig pressed, id:", gigId);
+  const handleGigPress = (gig) => {
+    console.log('handle gig press', gig)
+    router.push({
+      pathname: `/gig-worker/detail/${gig.gig_id}`,
+      params: { gig: JSON.stringify(gig) }
+    });
+    console.log("Gig pressed, id:", gig.gig_id);
   };
 
   // Example filter logic (optional)
-  const filteredGigs = dummyGigs.filter((gig) =>
-    gig.name.toLowerCase().includes(searchText.toLowerCase())
+  const filteredGigs = gigs.filter((gig) =>
+    gig.title.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const renderGigItem = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.gigItem} onPress={() => handleGigPress(item.id)}>
+      <TouchableOpacity style={styles.gigItem} onPress={() => handleGigPress(item)}>
 
         {/* Gig Info */}
         <View style={styles.gigInfo}>
-          <Text style={styles.gigName}>{item.name}</Text>
+          <Text style={styles.gigName}>{item.title}</Text>
           <Text style={styles.gigDescription} numberOfLines={1}>
             {item.description}
           </Text>
@@ -62,7 +84,7 @@ export default function GigSearch() {
 
         {/* Pay Rate + Arrow */}
         <View style={styles.rightContainer}>
-          <Text style={styles.payRate}>{item.payRate}</Text>
+          <Text style={styles.payRate}>{item.category}</Text>
           <Text style={styles.arrow}>{">"}</Text>
         </View>
       </TouchableOpacity>
@@ -87,7 +109,7 @@ export default function GigSearch() {
       {/* List of Gigs */}
       <FlatList
         data={filteredGigs}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.gig_id}
         renderItem={renderGigItem}
         contentContainerStyle={styles.listContent}
       />

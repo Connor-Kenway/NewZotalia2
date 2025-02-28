@@ -84,3 +84,19 @@ export const gigWorkerProfileSetup = async (data) => {
 //     pay_rate_hourly: 50
 
 // };
+
+//used to get the gig_worker profile that is display on the profile page
+export const fetchGigWorkerProfile = async (gig_worker_id) => {
+    try {
+        const response = await api.get(`/gig-workers/${gig_worker_id}`);
+        console.log('Fetched Gig Worker Profiles:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch gig worker profiles:', error);
+        return { success: false, message: 'Failed to fetch gig worker profiles', error: error.message };
+    }
+};
+
+
+
+

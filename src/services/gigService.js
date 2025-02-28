@@ -90,3 +90,28 @@ export const gigSetup = async (data) => {
 //     client_id: '01210e7c-915a-4af7-b933-969e6b0101d3',
 
 // };
+
+export const fetchGigs = async () => {
+    try {
+        console.log('in fetching gigs')
+        const response = await api.get('/gigs/');
+        console.log(response);
+        return response.data;
+    }
+    catch (error) {
+        console.error('Failed to fetch gigs:', error);
+        return { success: false, message: 'Failed to fetch gigs', error: error.message };
+    }
+}
+
+//might not need this if we pass back the entire gig information from the list of gigs view to the individual gig view
+export const fetchGigDetails = async (gigId) => {
+    try {
+     
+      const response = await api.get(`/gigs/${gigId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch gig details:', error);
+      return { success: false, message: 'Failed to fetch gig details', error: error.message };
+    }
+  };
