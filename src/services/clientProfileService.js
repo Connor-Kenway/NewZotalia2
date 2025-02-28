@@ -1,6 +1,6 @@
 import { api } from './index';
 
-
+//this is the really should be called the gig-worker profile service file
 const jobSpecialties = {
     'Programming': 'Programming',
     'UI/UX': 'UI/UX',
@@ -96,6 +96,8 @@ export const fetchGigWorkerProfile = async (gig_worker_id) => {
         return { success: false, message: 'Failed to fetch gig worker profiles', error: error.message };
     }
 };
+
+
 
 
 

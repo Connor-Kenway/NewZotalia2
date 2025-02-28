@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 import { GigWorkerProfile, gigWorkerProfileSetup } from "../../src/services/clientProfileService";
 import Checkbox from 'expo-checkbox';
 import { TextInput } from "react-native-web";
-
+import { jwtDecode } from 'jwt-decode';
 export default function ProfileCategories() {
   const router = useRouter();
   //refactor this out

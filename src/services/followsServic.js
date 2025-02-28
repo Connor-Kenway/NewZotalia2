@@ -24,3 +24,27 @@ export const fetchFollowing = async (Profile_Id) => {
     }
 }
 
+export const fetchFollowersCount = async (Profile_Id) => {
+    try {
+        console.log(Profile_Id);
+        const response = await api.get(`/follows/${Profile_Id}/followed/count`);
+        console.log(response);
+        return response.data;
+    }
+    catch (error) {
+        console.error('Failed to fetch user follows:', error);
+        return { success: false, message: 'Failed to fetch user follows', error: error.message };
+    }
+}
+
+export const fetchFollowingCount = async (Profile_Id) => {
+    try {
+        const response = await api.get(`/follows/${Profile_Id}/followers/count`);
+        console.log(response);
+        return response.data;
+    }
+    catch (error) {
+        console.error('Failed to fetch user following:', error);
+        return { success: false, message: 'Failed to fetch user following', error: error.message };
+    }
+}
