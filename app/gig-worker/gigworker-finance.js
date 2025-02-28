@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from "react-native";
 import TabBar from "../components/tabbar";
 
+const pieChartGraphic = require("../assets/images/gigworker-finance-pieChart.png"); 
+
 export default function GigWorkerFinance() {
   // Example suggested gigs (dummy)
   const suggestedGigs = [
@@ -26,7 +28,7 @@ export default function GigWorkerFinance() {
 
       {/* Pie Chart Placeholder */}
       <View style={styles.chartContainer}>
-        <View style={styles.pieChart} />
+        <Image source={pieChartGraphic} style={styles.pieChartImage} />
       </View>
 
       {/* Earned Text */}
@@ -74,13 +76,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  pieChart: {
+  pieChartImage: {
     width: 200,
     height: 200,
-    backgroundColor: "#d3d3d3", // placeholder circle
-    borderRadius: 100,
+    resizeMode: "contain", // or "cover", "stretch", etc.
     marginBottom: 10,
   },
+  
   earnedText: {
     fontSize: 16,
     fontWeight: "600",

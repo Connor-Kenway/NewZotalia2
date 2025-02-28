@@ -44,7 +44,7 @@ function getTabs(userType) {
       { icon: searchIcon, path: '/gig-worker/gigworker-search', label: 'Search' },
       { icon: financeIcon, path: '/gig-worker/gigworker-finance', label: 'Finance' },
       { icon: homeIcon, path: '/gig-worker/gigworker-homepage', label: 'Home' },
-      { icon: messageIcon, path: '/messaging', label: 'Messages' },
+      { icon: messageIcon, path: 'gig-worker/gigworker-message', label: 'Messages' },
       { icon: profileIcon, path: '/gig-worker/gigworker-profile', label: 'Profile' },
     ];
   } else {
@@ -53,7 +53,7 @@ function getTabs(userType) {
       { icon: searchIcon, path: '/client/post-gig/client-gig-post', label: 'Search' },
       { icon: financeIcon, path: '/client/client-finance', label: 'Finance' },
       { icon: homeIcon, path: '/client/client-homepage', label: 'Home' },
-      { icon: messageIcon, path: '/messaging', label: 'Messages' },
+      { icon: messageIcon, path: '/client/client-message', label: 'Messages' },
       { icon: profileIcon, path: '/client/client-profile', label: 'Profile' },
     ];
   }
