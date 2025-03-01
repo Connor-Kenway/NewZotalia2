@@ -8,7 +8,6 @@ export const UserProvider = ({ children }) => {
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(null); // Boolean
 
   useEffect(() => {
-    // Retrieve from AsyncStorage instead of localStorage
     const loadUserType = async () => {
       try {
         const storedUserType = await AsyncStorage.getItem("userType");
