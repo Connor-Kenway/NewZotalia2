@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import TabBar from "../../components/tabbar";
 
 
 export default function ClientPostGigRequirements() {
@@ -216,7 +215,6 @@ export default function ClientPostGigRequirements() {
           <Text style={styles.nextText}>Next</Text>
         </TouchableOpacity>
       </ScrollView>
-    <TabBar/>
     </KeyboardAvoidingView>
   );
 }

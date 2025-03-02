@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from "react-native";
-import TabBar from "../components/tabbar";
 
 const pieChartGraphic = require("../assets/images/gigworker-finance-pieChart.png"); 
 
@@ -52,9 +51,6 @@ export default function GigWorkerFinance() {
         renderItem={renderSuggestedGig}
         contentContainerStyle={styles.suggestedList}
       />
-
-      {/* TabBar at the bottom */}
-      <TabBar />
     </View>
   );
 }

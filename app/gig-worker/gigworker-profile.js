@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useUser } from "../../src/context/UserContext";
-import TabBar from '../components/tabbar';
 
   const sampleProfileImage = require('../assets/images/profile-picture.png');
   const editIcon = require('../assets/icons/edit-icon.png');
@@ -78,8 +77,6 @@ export default function GigWorkerProfile() {
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
       </ScrollView>
-
-      <TabBar />
     </View>
   );
 }

@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { useRouter } from 'expo-router';
 import { useUser } from '../../src/context/UserContext';
-import TabBar from '../components/tabbar';
 
 const bookmarkIcon = require('../assets/icons/bookmark-icon.png'); 
 // Example data
@@ -105,7 +104,6 @@ export default function GigWorkerHomePage() {
         />
       </View>
 
-      {/* Action buttons (X, →) above the TabBar */}
       <View style={styles.actionButtons}>
         <TouchableOpacity style={[styles.circleButton, styles.noButton]} onPress={handleNoPress}>
           <Text style={styles.circleButtonText}>X</Text>
@@ -115,9 +113,6 @@ export default function GigWorkerHomePage() {
           <Text style={styles.circleButtonText}>→</Text>
         </TouchableOpacity>
       </View>
-
-      {/* TabBar pinned at bottom */}
-      <TabBar />
     </View>
   );
 }

@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useUser } from "../../src/context/UserContext";
-import TabBar from '../components/tabbar';
 
 const sampleProfileImage = require('../assets/images/JohnDoeProfile.png');
 const editIcon = require('../assets/icons/edit-icon.png');
@@ -101,8 +100,6 @@ export default function ClientProfile() {
         ListHeaderComponent={renderHeader}
         contentContainerStyle={styles.listContent}
       />
-
-      <TabBar />
     </View>
   );
 }
