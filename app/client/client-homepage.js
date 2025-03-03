@@ -26,7 +26,6 @@ export default function ClientHomePage() {
   const router = useRouter();
   const swiperRef = useRef(null);
 
-  // Called when user swipes left or right
   const onSwipedLeft = (cardIndex) => {
     console.log('Skipped worker:', workersData[cardIndex].id);
     // Call an API or store the skip
@@ -50,7 +49,7 @@ export default function ClientHomePage() {
         <View style={styles.card}>
           <View style={styles.cardBackgroundShape} />
 
-          {/* Bookmark icon at top-right of the card */}
+          {/* Bookmark icon*/}
           <TouchableOpacity style={styles.bookmarkWrapper} onPress={() => console.log('Bookmark pressed')}>
             <Image source={bookmarkIcon} style={styles.bookmarkIcon} />
           </TouchableOpacity>
@@ -97,14 +96,18 @@ export default function ClientHomePage() {
           renderCard={renderCard}
           onSwipedLeft={onSwipedLeft}
           onSwipedRight={onSwipedRight}
-          onTapCard={onTapCard}
           cardIndex={0}
           backgroundColor="#fff"
           stackSize={3}
           infinite={false}
           showSecondCard={true}
-          cardStyle={{ marginTop: 0 }}
-          cardVerticalMargin={0}
+
+          cardStyle={{
+            width: '90%',
+            height: '85%',
+            borderRadius: 20,
+            backgroundColor: '#fff',
+          }}
         />
       </View>
 
@@ -173,21 +176,15 @@ const styles = StyleSheet.create({
   },
   // Swiper
   swiperContainer: {
-    width: 320,
-    height: 420,
+    flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
-    // marginBottom: 70, // space for TabBar
   },
   // Card
   card: {
-    // flex: 1,
-    width: 320,
-    height: 420,
+    flex: 1,
     borderRadius: 20,
     backgroundColor: '#fff',
     padding: 20,
-    paddingTop: 40,
     alignItems: 'center',
     justifyContent: 'center',
     // shadow
@@ -228,10 +225,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   actionButtons: {
-    position: 'absolute',
-    bottom: 90,
-    left: 0,
-    right: 0,
+    alignItems: 'center',
+    marginBottom: 100,
     flexDirection: 'row',
     justifyContent: 'center',
     zIndex: 999,

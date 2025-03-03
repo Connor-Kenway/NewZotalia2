@@ -46,7 +46,7 @@ export default function GigWorkerHomePage() {
       <View style={styles.card}>
         <View style={styles.cardBackgroundShape} />
 
-        {/* Bookmark icon at top-right of the card */}
+        {/* Bookmark icon */}
         <TouchableOpacity style={styles.bookmarkWrapper} onPress={() => console.log('Bookmark pressed')}>
           <Image source={bookmarkIcon} style={styles.bookmarkIcon} />
         </TouchableOpacity>
@@ -93,14 +93,18 @@ export default function GigWorkerHomePage() {
           renderCard={renderCard}
           onSwipedLeft={onSwipedLeft}
           onSwipedRight={onSwipedRight}
-          // onTapCard={onTapCard}
           cardIndex={0}
           backgroundColor="#fff"
           stackSize={3}
-          infinite={true}
+          infinite={false}
           showSecondCard={true}
-          cardStyle={{ marginTop: 0 }}
-          cardVerticalMargin={0}
+
+          cardStyle={{
+            width: '90%',
+            height: '85%',
+            borderRadius: 20,
+            backgroundColor: '#fff',
+          }}
         />
       </View>
 
@@ -121,7 +125,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    position: 'relative',
   },
   // Header
   header: {
@@ -169,18 +172,15 @@ const styles = StyleSheet.create({
   },
   // Swiper
   swiperContainer: {
-    width: 320,
-    height: 420,
+    flex: 1,
     justifyContent: 'center',
   },
   // Card
   card: {
-    width: 320,
-    height: 420,
+    flex: 1,
     borderRadius: 20,
     backgroundColor: '#fff',
     padding: 20,
-    paddingTop: 40,
     alignItems: 'center',
     justifyContent: 'center',
     // shadow
@@ -191,17 +191,6 @@ const styles = StyleSheet.create({
     elevation: 2,
     position: 'relative',
   },
-  // // Subtle shape behind content
-  // cardBackgroundShape: {
-  //   position: 'absolute',
-  //   top: 0,
-  //   left: 0,
-  //   width: '80%',
-  //   height: '60%',
-  //   backgroundColor: '#6A1B9A20', // a purple-ish translucent shape
-  //   borderRadius: 20,
-  //   transform: [{ rotate: '10deg' }],
-  // },
   bookmarkWrapper: {
     position: 'absolute',
     top: 10,
@@ -232,10 +221,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   actionButtons: {
-    position: 'absolute',
-    bottom: 90,
-    left: 0,
-    right: 0,
+    alignItems: 'center',
+    marginBottom: 100,
     flexDirection: 'row',
     justifyContent: 'center',
     zIndex: 999,
