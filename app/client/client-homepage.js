@@ -47,7 +47,10 @@ export default function ClientHomePage() {
       if (!card) return null;
       return (
         <View style={styles.card}>
-          <View style={styles.cardBackgroundShape} />
+          <View style={styles.cardBackgroundContainer}>
+            <View style={styles.cardPurpleBg} />
+            <View style={styles.cardWhiteTop} />
+          </View>
 
           {/* Bookmark icon*/}
           <TouchableOpacity style={styles.bookmarkWrapper} onPress={() => console.log('Bookmark pressed')}>
@@ -184,6 +187,8 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 20,
     backgroundColor: '#fff',
+    borderWidth: 2,
+    borderColor: '#9B85EC', 
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -193,7 +198,32 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
+    overflow: 'hidden',
     position: 'relative',
+  },
+  cardBackgroundContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  cardPurpleBg: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#D2C7F7', // your purple color
+  },
+  cardWhiteTop: {
+    position: 'absolute',
+    width: '200%',
+    height: '55%',
+    backgroundColor: '#fff',
+    transform: [{ rotate: '-10deg' }],
+    top: '-10%',
+  left: '-50%',
   },
   bookmarkWrapper: {
     position: 'absolute',

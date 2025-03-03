@@ -26,7 +26,6 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   container: {
     flex: 1,
