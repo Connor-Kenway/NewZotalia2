@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useUser } from "../../src/context/UserContext";
+import { signOut } from "../../src/services/authService";
+
 import { useState, useEffect } from 'react';
 import TabBar from '../components/tabbar';
 import { fetchFollowers } from '../../src/services/followsServic';
@@ -44,9 +46,15 @@ export default function GigWorkerProfile() {
   };
 
   // Sign out
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     console.log("Sign out pressed");
-    // e.g. remove tokens, router.replace("/auth");
+    try {
+      await signOut();            
+      setUserType(null);      
+      router.replace("/auth");
+    } catch (error) {
+      console.log("Error signing out:", error);
+    }
   };
 
     // Handlers for navigating to detailed pages
@@ -113,8 +121,6 @@ export default function GigWorkerProfile() {
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
       </ScrollView>
-
-      <TabBar />
     </View>
   );
 }

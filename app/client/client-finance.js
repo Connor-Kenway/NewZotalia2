@@ -1,8 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 
-import TabBar from "../components/tabbar";
-
 export default function ClientFinance() {
   // Dummy data for ongoing gigs
   const ongoingGigs = [
@@ -47,7 +45,6 @@ export default function ClientFinance() {
         renderItem={renderGigItem}
         contentContainerStyle={{ paddingHorizontal: 16 }}
       />
-      <TabBar />
     </View>
   );
 }

@@ -32,7 +32,7 @@ export default function SignUpClient() {
         // setMessage(response.message);
         
       } catch (error) {
-        //setMessage('Sign up failed');
+        // setMessage('Sign up failed');
       }
       console.log(email, password)
       const sign_in_response = await signIn({ email, password} );

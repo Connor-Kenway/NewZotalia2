@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
-import TabBar from '../components/tabbar';
 
 // Example conversation data
 const conversations = [
@@ -58,8 +57,6 @@ export default function ClientMessage() {
         renderItem={renderConversationItem}
         contentContainerStyle={styles.listContent}
       />
-
-      <TabBar />
     </View>
   );
 }

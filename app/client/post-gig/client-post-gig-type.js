@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import TabBar from "../../components/tabbar";
 
 
 const gigTypes = ["Programming", "AI", "Animation", "UI/UX"];
@@ -44,8 +43,6 @@ export default function ClientPostGigType() {
       <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
         <Text style={styles.nextText}>Next</Text>
       </TouchableOpacity>
-
-      <TabBar/>
     </View>
     
   );

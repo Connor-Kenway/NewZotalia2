@@ -6,9 +6,9 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [userType, setUserType] = useState(null); // 'gig-worker', 'client', or null
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(null); // Boolean
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Retrieve from AsyncStorage instead of localStorage
     const loadUserType = async () => {
       try {
         const storedUserType = await AsyncStorage.getItem("userType");
@@ -24,6 +24,8 @@ export const UserProvider = ({ children }) => {
         }
       } catch (error) {
         console.error("Failed to load userType from AsyncStorage", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -31,7 +33,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userType, setUserType, isFirstTimeUser, setIsFirstTimeUser }}>
+    <UserContext.Provider value={{ userType, setUserType, isFirstTimeUser, setIsFirstTimeUser, isLoading }}>
       {children}
     </UserContext.Provider>
   );

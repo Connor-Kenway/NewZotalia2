@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image } from "react-native";
 import { useRouter } from "expo-router";
+
 import TabBar from '../components/tabbar';
 import { fetchGigs } from "../../src/services/gigService";
 
@@ -113,8 +114,6 @@ export default function GigSearch() {
         renderItem={renderGigItem}
         contentContainerStyle={styles.listContent}
       />
-
-    <TabBar />
     </View>
   );
 }
