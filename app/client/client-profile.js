@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useUser } from "../../src/context/UserContext";
+import { signOut } from "../../src/services/authService";
+
 
 const sampleProfileImage = require('../assets/images/JohnDoeProfile.png');
 const editIcon = require('../assets/icons/edit-icon.png');
@@ -17,9 +19,15 @@ export default function ClientProfile() {
   };
 
   // Sign out
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     console.log("Sign out pressed");
-    // e.g., remove tokens, router.replace("/auth");
+    try {
+      await signOut();            
+      setUserType(null);      
+      router.replace("/auth");
+    } catch (error) {
+      console.log("Error signing out:", error);
+    }
   };
 
   // Navigate to edit profile
