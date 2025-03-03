@@ -4,13 +4,35 @@ import { useRouter } from 'expo-router';
 import { useUser } from "../../src/context/UserContext";
 import { signOut } from "../../src/services/authService";
 
-
+import { useState, useEffect } from 'react';
+import TabBar from '../components/tabbar';
+import { fetchFollowers } from '../../src/services/followsServic';
+import { fetchGigWorkerProfile } from '../../src/services/clientProfileService';
   const sampleProfileImage = require('../assets/images/profile-picture.png');
   const editIcon = require('../assets/icons/edit-icon.png');
 
 export default function GigWorkerProfile() {
   const router = useRouter();
   const { setUserType } = useUser(); // get user context
+  const [gigs, setGigs] = useState([]);
+  //refactor the use effect to load gigs into shared component
+  useEffect(() => {
+    const loadGigs = async () => {
+      console.log('hitting use effect')
+      const response = await fetchGigs();
+      console.log('after response')
+      if (response.success !== false) {
+        setGigs(response);
+        // setFilteredGigs(response);
+        console.log('success')
+      } else {
+        console.log('failed')
+        console.error(response.message);
+      }
+    };
+
+    loadGigs();
+  }, []);
 
   // Handler for editing profile
   const handleChangeProfile = () => {
@@ -34,6 +56,12 @@ export default function GigWorkerProfile() {
       console.log("Error signing out:", error);
     }
   };
+
+    // Handlers for navigating to detailed pages
+    //depending on route might need to pass through different data
+    const handleNavigate = (path) => {
+      router.push(path);
+    };
 
   return (
     <View style={styles.container}>
@@ -60,11 +88,19 @@ export default function GigWorkerProfile() {
 
         {/* Displays Section */}
         <View style={styles.infoContainer}>
-          <Text style={styles.infoHeader}>Displays:</Text>
-          <Text style={styles.infoItem}>• Top Field of Work</Text>
-          <Text style={styles.infoItem}>• Resume/Built-in portfolio</Text>
-          <Text style={styles.infoItem}>• Reviews</Text>
-          <Text style={styles.infoItem}>• Followers + Following</Text>
+        <Text style={styles.infoHeader}>Displays:</Text>
+          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/top-field-of-work')}>
+            <Text style={styles.infoItem}>• Top Field of Work</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/resume-portfolio')}>
+            <Text style={styles.infoItem}>• Resume/Built-in portfolio</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/reviews')}>
+            <Text style={styles.infoItem}>• Reviews</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/followers-following')}>
+            <Text style={styles.infoItem}>• Followers + Following</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Tabs Section */}
