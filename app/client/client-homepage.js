@@ -39,7 +39,14 @@ export default function ClientHomePage() {
   // Called when user taps the card
   const onTapCard = (cardIndex) => {
     const workerId = workersData[cardIndex].id;
-    // e.g., router.push(`/client/worker-detail/${workerId}`);
+    router.push({
+      pathname: `/client/apply/${workersData[cardIndex].id}`,
+      params: {
+        name: workersData[cardIndex].name,
+        imageUri: workersData[cardIndex].image,
+        description: workersData[cardIndex].description,
+      }
+    });    
   };
 
     // Render each card
@@ -99,6 +106,7 @@ export default function ClientHomePage() {
           renderCard={renderCard}
           onSwipedLeft={onSwipedLeft}
           onSwipedRight={onSwipedRight}
+          onTapCard={onTapCard}
           cardIndex={0}
           backgroundColor="#fff"
           stackSize={3}
