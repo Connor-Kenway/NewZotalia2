@@ -36,7 +36,14 @@ export default function GigWorkerHomePage() {
 
   const onTapCard = (cardIndex) => {
     const gigId = gigsData[cardIndex].id;
-    router.push(`/gig-worker/gig-detail/${gigId}`);
+    router.push({
+      pathname: `/gig-worker/apply/${gigsData[cardIndex].id}`,
+      params: {
+        name: gigsData[cardIndex].name,
+        imageUri: gigsData[cardIndex].image,
+        description: gigsData[cardIndex].description,
+      }
+    });    
   };
 
   // Render each card
@@ -96,6 +103,7 @@ export default function GigWorkerHomePage() {
           renderCard={renderCard}
           onSwipedLeft={onSwipedLeft}
           onSwipedRight={onSwipedRight}
+          onTapCard={onTapCard}
           cardIndex={0}
           backgroundColor="#fff"
           stackSize={3}
