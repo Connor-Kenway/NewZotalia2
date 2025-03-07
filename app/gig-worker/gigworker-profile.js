@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import TabBar from '../components/tabbar';
 import { fetchFollowers } from '../../src/services/followsServic';
 import { fetchGigWorkerProfile } from '../../src/services/clientProfileService';
+import { fetchFollowersCount, fetchFollowingCount } from '../../src/services/followsServic';
   const sampleProfileImage = require('../assets/images/profile-picture.png');
   const editIcon = require('../assets/icons/edit-icon.png');
 
@@ -15,6 +16,9 @@ export default function GigWorkerProfile() {
   const router = useRouter();
   const { setUserType } = useUser(); // get user context
   const [gigs, setGigs] = useState([]);
+  const [ProfileName, setProfileName] = useState('');
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
   //refactor the use effect to load gigs into shared component
   useEffect(() => {
     const loadGigs = async () => {
@@ -33,6 +37,46 @@ export default function GigWorkerProfile() {
 
     loadGigs();
   }, []);
+//loads the follower and following count
+  useEffect(() => {
+    const loadFollowersandFollowingCount = async () => {
+      console.log('loading followers and following count');
+      const response = await fetchFollowersCount(userId);
+      if (response.success !== false) {
+        setFollowersCount(response.followed_count);
+        console.log('Followers:', response);
+      } else {
+        console.error(response.message);
+      }
+      const response2 = await fetchFollowingCount(userId);
+      if (response2.success !== false) {
+        setFollowingCount(response2.follower_count);
+        console.log('Following:', response2);
+      } else {
+        console.error(response2.message);
+      }
+    }
+    loadFollowersandFollowingCount();
+  }, []);
+
+  useEffect(() => {
+    const loadProfileName = async () => {
+      console.log('hitting use effect')
+      const response = await fetchGigs();
+      console.log('after response')
+      if (response.success !== false) {
+        setGigs(response);
+        // setFilteredGigs(response);
+        console.log('success')
+      } else {
+        console.log('failed')
+        console.error(response.message);
+      }
+    };
+
+    loadGigs();
+  }, []);
+
 
   // Handler for editing profile
   const handleChangeProfile = () => {
@@ -99,7 +143,7 @@ export default function GigWorkerProfile() {
             <Text style={styles.infoItem}>• Reviews</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/followers-following')}>
-            <Text style={styles.infoItem}>• Followers + Following</Text>
+            <Text style={styles.infoItem}>• Followers: {followersCount},  Following: {followingCount}</Text>
           </TouchableOpacity>
         </View>
 

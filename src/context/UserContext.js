@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setAuthToken } from "../services";
+import { signIn } from "../services/authService";
 
 const UserContext = createContext();
 
@@ -18,6 +20,8 @@ export const UserProvider = ({ children }) => {
           setUserType(storedUserType);
           setIsFirstTimeUser(false);
           console.log("User type found:", storedUserType);
+          console.log('auth token found:', await AsyncStorage.getItem("access_token"))
+          setAuthToken(await AsyncStorage.getItem("access_token"));
         } else {
           setIsFirstTimeUser(true);
           console.log("No user type found, setting as first-time user.");
