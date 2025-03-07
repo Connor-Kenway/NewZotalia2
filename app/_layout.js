@@ -8,7 +8,7 @@ export default function RootLayout() {
   const pathname = usePathname();
 
   // For example, hide TabBar on anything that includes "/message-chat"
-  const hideTabBarRoutes = ["/gig-worker/gigworker-message-chat", "/client/client-message-chat"];
+  const hideTabBarRoutes = ["/gig-worker/gigworker-message-chat", "/client/client-message-chat", "/auth/choose-account", "/auth/sign-up"];
   const shouldHideTabBar = hideTabBarRoutes.some((route) => pathname.startsWith(route));
 
   return (

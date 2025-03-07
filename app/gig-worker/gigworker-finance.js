@@ -1,10 +1,45 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, FlatList, Dimensions } from "react-native";
+import { PieChart } from "react-native-chart-kit";
 
-const pieChartGraphic = require("../assets/images/gigworker-finance-pieChart.png"); 
+// const pieChartGraphic = require("../assets/images/gigworker-finance-pieChart.png"); 
+const screenWidth = Dimensions.get("window").width;
+
+const pastGigs = [
+  { id: "1", name: "Gig A", income: 500 },
+  { id: "2", name: "Gig B", income: 300 },
+  { id: "3", name: "Gig C", income: 1200 },
+];
+
+function getColor(index) {
+  const colors = ["#FF6666", "#FFA500", "#66BB6A", "#6A1B9A", "#FFD700"];
+  return colors[index % colors.length];
+}
 
 export default function GigWorkerFinance() {
-  // Example suggested gigs (dummy)
+  const pieData = pastGigs.map((gig, index) => ({
+    name: gig.name,
+    cost: gig.income,
+    color: getColor(index),
+    legendFontColor: "#7F7F7F",
+    legendFontSize: 12,
+  }));
+
+  const chartConfig = {
+    backgroundGradientFrom: "#fff",
+    backgroundGradientTo: "#fff",
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+  };
+
+  const renderPastGig = ({ item }) => {
+    return (
+      <View style={styles.pastGigCard}>
+      <Text style={styles.pastGigName}>{item.name}</Text>
+        <Text style={styles.pastGigIncome}>${item.income}</Text>
+      </View>
+    );
+  };
+
   const suggestedGigs = [
     { id: "1", title: "I need a website coded!", price: "$1000" },
     { id: "2", title: "I need a chatbot implemented", price: "$500" },
@@ -27,7 +62,17 @@ export default function GigWorkerFinance() {
 
       {/* Pie Chart Placeholder */}
       <View style={styles.chartContainer}>
-        <Image source={pieChartGraphic} style={styles.pieChartImage} />
+        <PieChart
+          data={pieData}
+          width={screenWidth}
+          height={220}
+          chartConfig={chartConfig}
+          accessor={"cost"}
+          backgroundColor={"transparent"}
+          paddingLeft={"15"}
+          center={[0, 0]}
+          absolute
+        />
       </View>
 
       {/* Earned Text */}
@@ -40,6 +85,17 @@ export default function GigWorkerFinance() {
           You’re earning $170 with this gig! You could be earning more to reach your goals
         </Text>
       </View>
+
+      {/* Past Gigs Section */}
+      <Text style={styles.suggestedTitle}>Past Gigs</Text>
+      <FlatList
+        data={pastGigs}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        renderItem={renderPastGig}
+        contentContainerStyle={styles.suggestedList}
+      />
 
       {/* Suggested Gigs */}
       <Text style={styles.suggestedTitle}>Suggested Gigs</Text>
@@ -140,6 +196,32 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   suggestedGigPrice: {
+    fontSize: 12,
+    color: "#6A1B9A",
+    fontWeight: "bold",
+  },
+  // Past gig card styles
+  pastGigCard: {
+    width: 150,
+    height: 80,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 10,
+    marginRight: 10,
+    padding: 10,
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  pastGigName: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 4,
+  },
+  pastGigIncome: {
     fontSize: 12,
     color: "#6A1B9A",
     fontWeight: "bold",
