@@ -9,6 +9,7 @@ import TabBar from '../components/tabbar';
 import { fetchFollowers } from '../../src/services/followsServic';
 import { fetchGigWorkerProfile } from '../../src/services/clientProfileService';
 import { fetchFollowersCount, fetchFollowingCount } from '../../src/services/followsServic';
+import AsyncStorage from '@react-native-async-storage/async-storage';
   const sampleProfileImage = require('../assets/images/profile-picture.png');
   const editIcon = require('../assets/icons/edit-icon.png');
 
@@ -74,7 +75,7 @@ export default function GigWorkerProfile() {
       }
     };
 
-    loadGigs();
+    loadProfileName();
   }, []);
 
 
@@ -96,6 +97,7 @@ export default function GigWorkerProfile() {
       await signOut();            
       setUserType(null);      
       router.replace("/auth");
+      await AsyncStorage.clear();
     } catch (error) {
       console.log("Error signing out:", error);
     }

@@ -25,7 +25,7 @@ export default function ChooseAccount() {
       setIsFirstTimeUser(false);
 
       if (type === "gig-worker") {
-        router.replace("/gig-worker/gigworker-profile-info");
+        router.replace("/gig-worker/gigworker-profile-name");
       } else {
         router.replace("/client/client-profile-info");
       }
