@@ -7,9 +7,11 @@ import { signOut } from "../../src/services/authService";
 import { useState, useEffect } from 'react';
 import TabBar from '../components/tabbar';
 import { fetchFollowers } from '../../src/services/followsServic';
-import { fetchGigWorkerProfile } from '../../src/services/clientProfileService';
+import { fetchGigWorkerProfile, fetchCountOfGigWorkerReviews, fetchGigWorkerAverageRating } from '../../src/services/clientProfileService';
 import { fetchFollowersCount, fetchFollowingCount } from '../../src/services/followsServic';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
   const sampleProfileImage = require('../assets/images/profile-picture.png');
   const editIcon = require('../assets/icons/edit-icon.png');
 
@@ -20,6 +22,8 @@ export default function GigWorkerProfile() {
   const [ProfileName, setProfileName] = useState('');
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
+  const [reviewsCount, setReviewsCount] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
   //refactor the use effect to load gigs into shared component
   useEffect(() => {
     const loadGigs = async () => {
@@ -66,7 +70,7 @@ export default function GigWorkerProfile() {
       const response = await fetchGigs();
       console.log('after response')
       if (response.success !== false) {
-        setGigs(response);
+        setProfileName(response);
         // setFilteredGigs(response);
         console.log('success')
       } else {
@@ -77,6 +81,28 @@ export default function GigWorkerProfile() {
 
     loadProfileName();
   }, []);
+
+  useEffect(() => {
+    const loadReviews = async () => {
+      const response = await fetchCountOfGigWorkerReviews(userId);
+      if (response.success !== false) {
+        setReviewsCount(response.count);
+        console.log('Reviews:', response);
+      } else {
+        console.error(response.message);
+      }
+
+      const response2 = await fetchGigWorkerAverageRating(userId);
+      if (response2.success !== false) {
+        setAverageRating(response2.rating);
+        console.log('Average Rating:', response2);
+      } else {
+        console.error(response2.message);
+      }
+    };
+    loadReviews();
+  }, []);
+
 
 
   // Handler for editing profile
@@ -142,7 +168,7 @@ export default function GigWorkerProfile() {
             <Text style={styles.infoItem}>• Resume/Built-in portfolio</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/reviews')}>
-            <Text style={styles.infoItem}>• Reviews</Text>
+            <Text style={styles.infoItem}>• {reviewsCount} reviews, {averageRating}/5 average</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleNavigate('/gig-worker/profile-details/followers-following')}>
             <Text style={styles.infoItem}>• Followers: {followersCount},  Following: {followingCount}</Text>

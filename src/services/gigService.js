@@ -115,3 +115,13 @@ export const fetchGigDetails = async (gigId) => {
       return { success: false, message: 'Failed to fetch gig details', error: error.message };
     }
   };
+
+  export const fetchGigReviews = async (gigId) => {
+    try {
+      const response = await api.get(`/gigs/${gigId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch gig reviews:', error);
+      return { success: false, message: 'Failed to fetch gig reviews', error: error.message };
+    }
+  }

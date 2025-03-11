@@ -1,3 +1,4 @@
+import { resolveModuleName } from 'typescript';
 import { api } from './index';
 
 //this is the really should be called the gig-worker profile service file
@@ -97,6 +98,28 @@ export const fetchGigWorkerProfile = async (gig_worker_id) => {
     }
 };
 
+
+export const fetchCountOfGigWorkerReviews = async (gig_worker_id) => {
+    try{
+        const response = await api.get(`/gig-workers/reviews/${gig_worker_id}`);
+        console.log('Fetched gig worker reviews:', response.data);
+        return response.data.length;
+    } catch (error) {
+        console.error('Failed to fetch gig worker reviews:', error);
+        return { success: false, message: 'Failed to fetch gig worker reviews', error: error.message };
+    }
+}
+
+export const fetchGigWorkerAverageRating = async (gig_worker_id) => {
+    try{
+        const response = await api.get(`/gig-workers/rating/${gig_worker_id}`);
+        console.log('Fetched gig worker rating:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch gig worker rating:', error);
+        return { success: false, message: 'Failed to fetch gig worker rating', error: error.message };
+    }
+}
 
 
 
