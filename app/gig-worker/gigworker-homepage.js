@@ -1,20 +1,23 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { useRouter } from 'expo-router';
 import { useUser } from '../../src/context/UserContext';
+import { fetchAllGigs } from '../../src/services/clientProfileService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { jwtDecode } from 'jwt-decode';
 
 const bookmarkIcon = require('../assets/icons/bookmark-icon.png'); 
 // Example data
 const gigsData = [
   {
-    id: '1',
+    gig_id: '1',
     name: 'James Doe',
     description: 'I need a Programmer with experience in Java, React JS...',
     image: require('../assets/images/JohnDoeProfile.png'),
   },
   {
-    id: '2',
+    gig_id: '2',
     name: 'Sarah Smith',
     description: 'Looking for a Full-Stack dev, remote or hybrid, starts next month...',
     image: require('../assets/images/profile-picture.png'),
@@ -25,23 +28,70 @@ export default function GigWorkerHomePage() {
   const router = useRouter();
   const swiperRef = useRef(null);
   const { setUserType } = useUser() || {};
+  const [noMoreGigs, setNoMoreGigs] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [gigs, setGigs] = useState([]);
+
+    //gets the user_id
+  useEffect(() => {
+      const getUserId = async () => {
+        console.log("Getting user ID from token...");
+        try {
+          const token = await AsyncStorage.getItem("access_token");
+          console.log('pausing on the await');
+          console.log(token);
+          if (token) {
+            const decodedToken = jwtDecode(token);
+            console.log("Decoded token:", decodedToken.sub);
+            setUserId(decodedToken.sub);
+          }
+        } catch (error) {
+          console.error("Failed to decode token:", error);
+        }
+      };
+      getUserId();
+    }, []);
+  //refactor the use effect to load gigs into shared component
+  useEffect(() => {
+    console.log('user_id',userId)
+    const loadGigs = async () => {
+      console.log('hitting use effect')
+      const response = await fetchAllGigs(userId);
+      console.log('after response')
+      if (response.success !== false) {
+        setGigs(response);
+        // setFilteredGigs(response);
+        setGigs(gigsData)
+        console.log('success',gigs)
+      } else {
+        console.log('failed')
+        console.error(response.message);
+      }
+    };
+
+    loadGigs();
+  }, [userId]);
 
   const onSwipedLeft = (cardIndex) => {
-    console.log('Rejected gig:', gigsData[cardIndex].id);
+    console.log('Rejected gig:', gigs[cardIndex].gig_id);
   };
 
   const onSwipedRight = (cardIndex) => {
-    console.log('Took gig:', gigsData[cardIndex].id);
+    console.log('Took gig:', gigs[cardIndex].gig_id);
+  };
+
+  const onSwipedAll = () => {
+    setNoMoreGigs(true);
   };
 
   const onTapCard = (cardIndex) => {
-    const gigId = gigsData[cardIndex].id;
+    const gigId = gigs[cardIndex].gig_id;
     router.push({
-      pathname: `/gig-worker/apply/${gigsData[cardIndex].id}`,
+      pathname: `/gig-worker/apply/${gigs[cardIndex].gig_id}`,
       params: {
-        name: gigsData[cardIndex].name,
-        imageUri: gigsData[cardIndex].image,
-        description: gigsData[cardIndex].description,
+        name: gigs[cardIndex].name,
+        imageUri: require('../assets/images/profile-picture.png'),
+        description: gigs[cardIndex].description,
       }
     });    
   };
@@ -73,13 +123,17 @@ export default function GigWorkerHomePage() {
 
   // X button => swipeLeft, check/arrow => swipeRight
   const handleNoPress = () => {
-    console.log('Rejected gig:', gigsData[0].id);
+    console.log('Rejected gig:', gigs[0].gig_id);
     swiperRef.current?.swipeLeft(); 
   };
 
   const handleYesPress = () => {
-    console.log('Accepted gig:', gigsData[0].id);
+    console.log('Accepted gig:', gigs[0].gig_id);
     swiperRef.current?.swipeRight();
+  };
+
+  const handleNavigate = (path) => {
+    router.push(path);
   };
 
   return (
@@ -97,26 +151,36 @@ export default function GigWorkerHomePage() {
 
       {/* Deck Swiper */}
       <View style={styles.swiperContainer}>
-        <Swiper
-          ref={swiperRef}
-          cards={gigsData}
-          renderCard={renderCard}
-          onSwipedLeft={onSwipedLeft}
-          onSwipedRight={onSwipedRight}
-          onTapCard={onTapCard}
-          cardIndex={0}
-          backgroundColor="#fff"
-          stackSize={3}
-          infinite={false}
-          showSecondCard={true}
-
-          cardStyle={{
-            width: '90%',
-            height: '85%',
-            borderRadius: 20,
-            backgroundColor: '#fff',
-          }}
-        />
+        {noMoreGigs ? (
+          <View style={styles.noMoreGigsContainer}>
+            <Text style={styles.noMoreGigsText}>No more gigs to display</Text>
+            <TouchableOpacity onPress={() => handleNavigate('/gig-worker/gigworker-search')}>
+              {/*navigate to search*/}
+              <Text style={{ color: '#007BFF' }}>Search for more gigs</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <Swiper
+            ref={swiperRef}
+            cards={gigs}
+            renderCard={renderCard}
+            onSwipedLeft={onSwipedLeft}
+            onSwipedRight={onSwipedRight}
+            onSwipedAll={onSwipedAll}
+            onTapCard={onTapCard}
+            cardIndex={0}
+            backgroundColor="#fff"
+            stackSize={3}
+            infinite={false}
+            showSecondCard={true}
+            cardStyle={{
+              width: '90%',
+              height: '85%',
+              borderRadius: 20,
+              backgroundColor: '#fff',
+            }}
+          />
+        )}
       </View>
 
       <View style={styles.actionButtons}>
@@ -185,6 +249,15 @@ const styles = StyleSheet.create({
   swiperContainer: {
     flex: 1,
     justifyContent: 'center',
+  },
+  noMoreGigsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noMoreGigsText: {
+    fontSize: 20,
+    color: '#666',
   },
   // Card
   card: {

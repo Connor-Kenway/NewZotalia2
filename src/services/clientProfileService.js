@@ -112,7 +112,7 @@ export const fetchCountOfGigWorkerReviews = async (gig_worker_id) => {
 
 export const fetchGigWorkerAverageRating = async (gig_worker_id) => {
     try{
-        const response = await api.get(`/gig-workers/rating/${gig_worker_id}`);
+        const response = await api.get(`/gig-workers/ratings_avg/${gig_worker_id}`);
         console.log('Fetched gig worker rating:', response.data);
         return response.data;
     } catch (error) {
@@ -121,7 +121,47 @@ export const fetchGigWorkerAverageRating = async (gig_worker_id) => {
     }
 }
 
+export const fetchTopWorkCategory = async (gig_worker_id) => {
+    try{
+        const response = await api.get(`/gig-workers/${gig_worker_id}/TopFieldOfWork`);
+        console.log('Fetched gig worker top category:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch gig worker top category:', error);
+        return { success: false, message: 'Failed to fetch gig worker top category', error: error.message };
+    }
+};
 
+//past curent and pending gigs tab. Filter later in the component
+export const fetchAllGigsCount = async (gig_worker_id) => {
+    try{
+        const response = await api.get(`/gig-workers/gigs/${gig_worker_id}`);
+        console.log('Fetched gig worker gigs:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch gig worker gigs:', error);
+        return { success: false, message: 'Failed to fetch gig worker gigs', error: error.message };
+    }
+}
+//to be used when user clicks display resume
+export const fetchResumeUri = async (gig_worker_id) => {
+    try{
+        const response = await api.get(`/gig-workers/resume/${gig_worker_id}`);
+        console.log('Fetched gig worker resume:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch gig worker resume:', error);
+        return { success: false, message: 'Failed to fetch gig worker resume', error: error.message };
+    }
+}
 
-
-
+export const fetchAllGigs = async (gig_worker_id) => {
+    try{
+        const response = await api.get(`/gig-workers/gigs/${gig_worker_id}/all`);
+        console.log('Fetched gig worker gigs:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch gig worker gigs:', error);
+        return { success: false, message: 'Failed to fetch gig worker gigs', error: error.message };
+    }
+}
