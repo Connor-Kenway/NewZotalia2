@@ -1,6 +1,9 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, FlatList, Dimensions } from "react-native";
 import { PieChart } from "react-native-chart-kit";
+import { useFinanceData } from "./hooks/finance/financeData";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // const pieChartGraphic = require("../assets/images/gigworker-finance-pieChart.png"); 
 const screenWidth = Dimensions.get("window").width;
@@ -17,6 +20,21 @@ function getColor(index) {
 }
 
 export default function GigWorkerFinance() {
+  const [monthlyIncome, currentGig] = useFinanceData();
+  //use effect to load gigs and money
+  useEffect(() => {
+    const loadIncome = async () => {
+      //need to pull user id
+      const response = await fetchMonthyIncome(AsyncStorage.getItem("access_token"));
+      console.log("after response");
+      if (response.success) {
+        setMonthlyIncome(response.income);
+      }
+    };
+    loadIncome();
+  }, []);
+
+
   const pieData = pastGigs.map((gig, index) => ({
     name: gig.name,
     cost: gig.income,
@@ -76,7 +94,7 @@ export default function GigWorkerFinance() {
       </View>
 
       {/* Earned Text */}
-      <Text style={styles.earnedText}>You’ve earned $2000 this month!!!</Text>
+      <Text style={styles.earnedText}>You’ve earned ${monthlyIncome} this month!!!</Text>
 
       {/* Current Gig Card */}
       <View style={styles.currentGigCard}>
