@@ -1,53 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Picker } from '@react-native-picker/picker';
-import { useRouter } from "expo-router";
-import { GigWorkerProfile, gigWorkerProfileSetup } from "../../src/services/clientProfileService";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
 import Checkbox from 'expo-checkbox';
-import { TextInput } from "react-native-web";
-import { jwtDecode } from 'jwt-decode';
+import { useRouter } from "expo-router";
+import { RadioButton } from 'react-native-paper';
+
 export default function ProfileCategories() {
   const router = useRouter();
-  //refactor this out
-  const [userId, setUserId] = useState(null);
-  
-  useEffect(() => {
-    const getUserId = async () => {
-      console.log("Getting user ID from token...");
-      try {
-        const token = await AsyncStorage.getItem("access_token");
-        console.log('pausing on the awiat')
-        console.log(token)
-        if (token) {
-          const decodedToken = jwtDecode(token);
-          console.log("Decoded token:", decodedToken.sub);
-          setUserId(decodedToken.sub);
-        }
-      } catch (error) {
-        console.error("Failed to decode token:", error);
-      }
-    };
-    getUserId();
-  }, []);
-
-
+  const [category, setCategory] = useState('');
+  const [workType, setWorkType] = useState('');
+  const [payRate, setPayRate] = useState('');
+  const [shortTerm, setShortTerm] = useState(false);
+  const [longTerm, setLongTerm] = useState(false);
 
   const handleNext = async () => {
-    // Navigate to the upload-profile step\
-    // try{
-
-    //   //call this once you create  new gigWorkerProfile
-    //   //the gigWorkerProfile instance does not exist yet
-    //   const response = await gigWorkerProfileSetup(gigWorkerProfile);
-    //   if (response.success===false) {
-    //     console.error("Failed to set up gig worker profile:", response);
-    //     alert("Failed to set up gig worker profile");
-    //     return;
-    //   }
-    //   await asyncStorage.setItem("gig-workerProfile", JSON.stringify(gig_worker_profile_data));
-    // }
-    // catch (error) {
-    // }
+    // Navigate to the upload-profile step
     router.push("/gig-worker/gigworker-profile-pic");
   };
 
@@ -57,6 +23,69 @@ export default function ProfileCategories() {
       <Text style={styles.description}>
         Select your job specialties and preferences
       </Text>
+
+      <Text style={styles.label}>Category</Text>
+      <RadioButton.Group onValueChange={value => setCategory(value)} value={category}>
+        <View style={styles.radioButtonRow}>
+          <View style={styles.radioButtonContainer}>
+            <RadioButton value="AI" />
+            <Text style={styles.radioButtonLabel}>AI</Text>
+          </View>
+          <View style={styles.radioButtonContainer}>
+            <RadioButton value="UI/UX" />
+            <Text style={styles.radioButtonLabel}>UI/UX</Text>
+          </View>
+          <View style={styles.radioButtonContainer}>
+            <RadioButton value="Programming" />
+            <Text style={styles.radioButtonLabel}>Programming</Text>
+          </View>
+          <View style={styles.radioButtonContainer}>
+            <RadioButton value="Animation" />
+            <Text style={styles.radioButtonLabel}>Animation</Text>
+          </View>
+        </View>
+      </RadioButton.Group>
+
+      <Text style={styles.label}>Work Type</Text>
+      <RadioButton.Group onValueChange={value => setWorkType(value)} value={workType}>
+        <View style={styles.radioButtonRow}>
+          <View style={styles.radioButtonContainer}>
+            <RadioButton value="In-person" />
+            <Text style={styles.radioButtonLabel}>In-person</Text>
+          </View>
+          <View style={styles.radioButtonContainer}>
+            <RadioButton value="Remote" />
+            <Text style={styles.radioButtonLabel}>Remote</Text>
+          </View>
+        </View>
+      </RadioButton.Group>
+
+      <Text style={styles.label}>Minimum Pay Rate</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter minimum pay rate"
+        keyboardType="numeric"
+        value={payRate}
+        onChangeText={setPayRate}
+      />
+
+      <Text style={styles.label}>Work Duration</Text>
+      <View style={styles.checkboxContainer}>
+        <Checkbox
+          value={shortTerm}
+          onValueChange={setShortTerm}
+          style={styles.checkbox}
+        />
+        <Text style={styles.checkboxLabel}>Short-term</Text>
+      </View>
+      <View style={styles.checkboxContainer}>
+        <Checkbox
+          value={longTerm}
+          onValueChange={setLongTerm}
+          style={styles.checkbox}
+        />
+        <Text style={styles.checkboxLabel}>Long-term</Text>
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleNext}>
         <Text style={styles.buttonText}>→</Text>
@@ -85,13 +114,55 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
   },
+  label: {
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 10,
+    textAlign: "left",
+    alignSelf: "flex-start",
+  },
+  radioButtonRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  radioButtonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 5,
+    marginRight: 10,
+    marginBottom: 10,
+  },
+  radioButtonLabel: {
+    fontSize: 14,
+    color: "#333",
+    marginLeft: 5,
+  },
   input: {
     padding: 12,
     fontSize: 16,
-    borderColor: "red",
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 10,
+    marginBottom: 20,
+    width: '100%',
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+    alignSelf: "flex-start",
+  },
+  checkbox: {
+    marginRight: 10,
+  },
+  checkboxLabel: {
+    fontSize: 16,
+    color: "#333",
   },
   button: {
     marginTop: 20,

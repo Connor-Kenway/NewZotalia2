@@ -8,14 +8,15 @@ const bookmarkIcon = require("../../assets/icons/bookmark-icon.png");
 const profilePicture = require("../../assets/images/JohnDoeProfile.png");
 
 export default function GigApplication() {
-  const { id, name, description } = useLocalSearchParams();
+  const { gig } = useLocalSearchParams();
+  const gigData = JSON.parse(gig);
+
   const [modalVisible, setModalVisible] = useState(false);
   const router = useRouter();
 
   const handleApply = () => {
-    console.log(`Apply pressed for gig ID: ${id}`);
+    console.log(`Apply pressed for gig ID: ${gigData.gig_id}`);
     setModalVisible(true);
-  
   };
 
   const handleBackPress = () => {
@@ -51,13 +52,28 @@ export default function GigApplication() {
           </View>
 
           <Text style={styles.clientName}>
-            {name || "Asset Management Inc."}
+            {gigData.name || "Asset Management Inc."}
           </Text>
 
           <Text style={styles.description}>
-            {description || ""}
+            {gigData.description || ""}
           </Text>
-          
+          <Text style={styles.description}>
+            {gigData.location.city || ""}, {gigData.location.state || ""}
+          </Text>
+          <Text style={styles.description}>
+            {gigData.payment_details.payRate || ""}
+          </Text>
+          <Text style={styles.description}>
+            Status: {gigData.status || ""}
+          </Text>
+          <Text style={styles.description}>
+            Start Date: {gigData.start_date || ""}
+          </Text>
+          <Text style={styles.description}>
+            End Date: {gigData.end_date || ""}
+          </Text>
+
           {/* Apply button */}
           <TouchableOpacity style={styles.applyButton} onPress={handleApply}>
             <Text style={styles.applyButtonText}>Apply</Text>
@@ -99,7 +115,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: 'row',
-    // a simple bottom border for clarity
     borderBottomColor: "#ddd",
     borderBottomWidth: 1,
   },
@@ -111,7 +126,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    marginTop: 20,
+    marginTop: 10, // Reduced marginTop
     marginLeft: 20,
     marginBottom: 10,
     fontWeight: "600",
@@ -119,18 +134,18 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-start", // Changed from "center" to "flex-start"
+    marginTop: 10, // Added marginTop to reduce space
   },
   card: {
     width: '90%',
-    height: '70%',
-    marginHorizontal: 20,
-    backgroundColor: "#f4f0fa", // a light purple
+    backgroundColor: "#f4f0fa",
     borderRadius: 20,
     padding: 20,
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
-    // optional shadow
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -148,7 +163,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     resizeMode: "contain",
-    tintColor: "#5f4b8b", // optional to color the icon
+    tintColor: "#5f4b8b",
   },
   profileCircle: {
     width: 80,
@@ -175,7 +190,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#333",
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 10,
     lineHeight: 20,
   },
   applyButton: {

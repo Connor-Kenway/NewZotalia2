@@ -15,48 +15,136 @@ const gigs = [
     name: 'James Doe',
     description: 'I need a Programmer with experience in Java, React JS...',
     image: require('../assets/images/JohnDoeProfile.png'),
+    location: {
+      city: 'San Francisco',
+      state: 'CA',
+    },
+    payment_details: {
+      payRate: '$45/hr',
+      type: 'hourly',
+    },
+    status: 'open',
+    start_date: '2025-03-20',
+    end_date: '2025-03-21',
   },
   {
     gig_id: '2',
     name: 'Sarah Smith',
     description: 'Looking for a Full-Stack dev, remote or hybrid, starts next month...',
     image: require('../assets/images/profile-picture.png'),
+    location: {
+      city: 'San Francisco',
+      state: 'CA',
+    },
+    payment_details: {
+      payRate: '$22/hr',
+      type: 'hourly',
+    },
+    status: 'open',
+    start_date: '2025-03-22',
+    end_date: '2025-03-23',
   },
   {
     gig_id: '3',
     name: 'Michael Johnson',
     description: 'Seeking a Data Scientist with expertise in Python and Machine Learning...',
     image: require('../assets/images/JohnDoeProfile.png'),
+    location: {
+      city: 'San Francisco',
+      state: 'CA',
+    },
+    payment_details: {
+      payRate: '$80/hr',
+      type: 'hourly',
+    },
+    status: 'open',
+    start_date: '2025-03-24',
+    end_date: '2025-03-25',
   },
   {
     gig_id: '4',
     name: 'Emily Davis',
     description: 'Need a Graphic Designer for a new marketing campaign...',
     image: require('../assets/images/profile-picture.png'),
+    location: {
+      city: 'San Francisco',
+      state: 'CA',
+    },
+    payment_details: {
+      payRate: '$50/hr',
+      type: 'hourly',
+    },
+    status: 'open',
+    start_date: '2025-03-26',
+    end_date: '2025-03-27',
   },
   {
     gig_id: '5',
     name: 'David Wilson',
     description: 'Looking for a Project Manager with experience in Agile methodologies...',
     image: require('../assets/images/JohnDoeProfile.png'),
+    location: {
+      city: 'San Francisco',
+      state: 'CA',
+    },
+    payment_details: {
+      payRate: '$60/hr',
+      type: 'hourly',
+    },
+    status: 'open',
+    start_date: '2025-03-28',
+    end_date: '2025-03-29',
   },
   {
     gig_id: '6',
     name: 'Sarah Brown',
     description: 'Seeking a Content Writer for our tech blog...',
     image: require('../assets/images/profile-picture.png'),
+    location: {
+      city: 'San Francisco',
+      state: 'CA',
+    },
+    payment_details: {
+      payRate: '$35/hr',
+      type: 'hourly',
+    },
+    status: 'open',
+    start_date: '2025-03-30',
+    end_date: '2025-03-31',
   },
   {
     gig_id: '7',
     name: 'Chris Evans',
     description: 'Need a DevOps Engineer to manage our cloud infrastructure...',
     image: require('../assets/images/JohnDoeProfile.png'),
+    location: {
+      city: 'San Francisco',
+      state: 'CA',
+    },
+    payment_details: {
+      payRate: '$45/hr',
+      type: 'hourly',
+    },
+    status: 'open',
+    start_date: '2025-04-01',
+    end_date: '2025-04-02',
   },
   {
     gig_id: '8',
     name: 'Natalie Portman',
     description: 'Looking for a Marketing Specialist to boost our online presence...',
     image: require('../assets/images/profile-picture.png'),
+    location: {
+      city: 'San Francisco',
+      state: 'CA',
+    },
+    payment_details: {
+      payRate: '$20/hr',
+      type: 'hourly',
+    },
+    status: 'open',
+    start_date: '2025-04-03',
+    end_date: '2025-04-04',
   },
 ];
 
@@ -83,11 +171,7 @@ export default function GigWorkerHomePage() {
     const gigId = gigs[cardIndex].gig_id;
     router.push({
       pathname: `/gig-worker/apply/${gigs[cardIndex].gig_id}`,
-      params: {
-        name: gigs[cardIndex].name,
-        imageUri: require('../assets/images/profile-picture.png'),
-        description: gigs[cardIndex].description,
-      }
+      params: {gig: JSON.stringify(gigs[cardIndex])}
     });    
   };
 
