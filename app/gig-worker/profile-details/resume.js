@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { useRouter } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
 
 export default function SupabasePDFViewer() {
   const [supabaseUrl, setSupabaseUrl] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchResumeUri = async () => {
@@ -40,9 +43,20 @@ export default function SupabasePDFViewer() {
     }
   }, [supabaseUrl]);
 
+  const handleBackPress = () => {
+    router.back();
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Resume</Text>
+      {/* Header */}
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={handleBackPress}>
+          <Feather name="arrow-left" size={24} color="#333" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Resume</Text>
+      </View>
+
       <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
         <Text style={styles.buttonText}>Swap Resume</Text>
       </TouchableOpacity>
@@ -77,16 +91,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F9F9',
   },
-  webview: {
-    flex: 1,
-    backgroundColor: '#F5F9F9',
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
-  header: {
-    fontSize: 50,
+  headerTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center',
-    color: "#479696",
-    marginVertical: 20,
+    color: '#333',
+    marginLeft: 10,
   },
   button: {
     backgroundColor: '#479696',
@@ -98,7 +115,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 16,
   },
   modalContainer: {
     flex: 1,
@@ -115,6 +132,10 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'white',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 16,
+  },
+  webview: {
+    flex: 1,
+    backgroundColor: '#F5F9F9',
   },
 });

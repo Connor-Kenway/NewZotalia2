@@ -1,12 +1,28 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, StatusBar, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Modal } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 export default function GigDetails() {
   const { gig } = useLocalSearchParams();
   const gigData = JSON.parse(gig);
-  
+  const router = useRouter();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleApplyPress = () => {
+    // Simulate successful application
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    router.back();
+  };
+
+  const handleBackPress = () => {
+    router.back();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Status Bar */}
@@ -14,7 +30,9 @@ export default function GigDetails() {
       
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Home</Text>
+        <TouchableOpacity onPress={handleBackPress}>
+          <Text style={styles.headerTitle}>Home</Text>
+        </TouchableOpacity>
       </View>
       
       <ScrollView>
@@ -26,7 +44,7 @@ export default function GigDetails() {
           </TouchableOpacity>
           
           {/* Job Title */}
-          <Text style={styles.jobTitle}>{gigData.title}</Text>
+          <Text style={styles.jobTitle}>{gigData.name}</Text>
           
           {/* Job Description */}
           <Text style={styles.jobDescription}>
@@ -46,7 +64,7 @@ export default function GigDetails() {
             {/* Rate */}
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>Rate:</Text>
-              <Text style={styles.detailValue}>{gigData.payment_details.rate} {gigData.payment_details.type}</Text>
+              <Text style={styles.detailValue}>{gigData.payment_details.payRate} {gigData.payment_details.type}</Text>
             </View>
             
             <View style={styles.divider} />
@@ -75,11 +93,29 @@ export default function GigDetails() {
           </View>
           
           {/* Apply Button */}
-          <TouchableOpacity style={styles.applyButton}>
+          <TouchableOpacity style={styles.applyButton} onPress={handleApplyPress}>
             <Text style={styles.applyButtonText}>Apply</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      {/* Success Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={handleCloseModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>You have successfully applied!</Text>
+            <Text style={styles.jobDescription}>The company will reach out shortly!</Text>
+            <TouchableOpacity style={styles.closeButton} onPress={handleCloseModal}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -174,6 +210,37 @@ const styles = StyleSheet.create({
     marginHorizontal: 60,
   },
   applyButtonText: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '600',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(61, 87, 113, 0.4)',
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 20,
+  },
+  closeButton: {
+    backgroundColor: '#5C9E9C',
+    borderRadius: 25,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  closeButtonText: {
     color: '#FFFFFF',
     fontSize: 17,
     fontWeight: '600',

@@ -1,15 +1,15 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { useRouter } from 'expo-router';
 import { useUser } from '../../src/context/UserContext';
-import { fetchAllGigs } from '../../src/services/clientProfileService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
 
 const bookmarkIcon = require('../assets/icons/bookmark-icon.png'); 
+
 // Example data
-const gigsData = [
+const gigs = [
   {
     gig_id: '1',
     name: 'James Doe',
@@ -22,6 +22,42 @@ const gigsData = [
     description: 'Looking for a Full-Stack dev, remote or hybrid, starts next month...',
     image: require('../assets/images/profile-picture.png'),
   },
+  {
+    gig_id: '3',
+    name: 'Michael Johnson',
+    description: 'Seeking a Data Scientist with expertise in Python and Machine Learning...',
+    image: require('../assets/images/JohnDoeProfile.png'),
+  },
+  {
+    gig_id: '4',
+    name: 'Emily Davis',
+    description: 'Need a Graphic Designer for a new marketing campaign...',
+    image: require('../assets/images/profile-picture.png'),
+  },
+  {
+    gig_id: '5',
+    name: 'David Wilson',
+    description: 'Looking for a Project Manager with experience in Agile methodologies...',
+    image: require('../assets/images/JohnDoeProfile.png'),
+  },
+  {
+    gig_id: '6',
+    name: 'Sarah Brown',
+    description: 'Seeking a Content Writer for our tech blog...',
+    image: require('../assets/images/profile-picture.png'),
+  },
+  {
+    gig_id: '7',
+    name: 'Chris Evans',
+    description: 'Need a DevOps Engineer to manage our cloud infrastructure...',
+    image: require('../assets/images/JohnDoeProfile.png'),
+  },
+  {
+    gig_id: '8',
+    name: 'Natalie Portman',
+    description: 'Looking for a Marketing Specialist to boost our online presence...',
+    image: require('../assets/images/profile-picture.png'),
+  },
 ];
 
 export default function GigWorkerHomePage() {
@@ -30,47 +66,6 @@ export default function GigWorkerHomePage() {
   const { setUserType } = useUser() || {};
   const [noMoreGigs, setNoMoreGigs] = useState(false);
   const [userId, setUserId] = useState(null);
-  const [gigs, setGigs] = useState([]);
-
-    //gets the user_id
-  useEffect(() => {
-      const getUserId = async () => {
-        console.log("Getting user ID from token...");
-        try {
-          const token = await AsyncStorage.getItem("access_token");
-          console.log('pausing on the await');
-          console.log(token);
-          if (token) {
-            const decodedToken = jwtDecode(token);
-            console.log("Decoded token:", decodedToken.sub);
-            setUserId(decodedToken.sub);
-          }
-        } catch (error) {
-          console.error("Failed to decode token:", error);
-        }
-      };
-      getUserId();
-    }, []);
-  //refactor the use effect to load gigs into shared component
-  useEffect(() => {
-    console.log('user_id',userId)
-    const loadGigs = async () => {
-      console.log('hitting use effect')
-      const response = await fetchAllGigs(userId);
-      console.log('after response')
-      if (response.success !== false) {
-        setGigs(response);
-        // setFilteredGigs(response);
-        setGigs(gigsData)
-        console.log('success',gigs)
-      } else {
-        console.log('failed')
-        console.error(response.message);
-      }
-    };
-
-    loadGigs();
-  }, [userId]);
 
   const onSwipedLeft = (cardIndex) => {
     console.log('Rejected gig:', gigs[cardIndex].gig_id);
@@ -96,18 +91,22 @@ export default function GigWorkerHomePage() {
     });    
   };
 
+  const handleBookmarkPress = () => {
+    Alert.alert('Gig bookmarked');
+  };
+
   // Render each card
   const renderCard = (card) => {
     if (!card) return null;
     return (
       <View style={styles.card}>
-      <View style={styles.cardBackgroundContainer}>
-        <View style={styles.cardPurpleBg} />
-        <View style={styles.cardWhiteTop} />
-      </View>
+        <View style={styles.cardBackgroundContainer}>
+          <View style={styles.cardPurpleBg} />
+          <View style={styles.cardWhiteTop} />
+        </View>
 
         {/* Bookmark icon */}
-        <TouchableOpacity style={styles.bookmarkWrapper} onPress={() => console.log('Bookmark pressed')}>
+        <TouchableOpacity style={styles.bookmarkWrapper} onPress={handleBookmarkPress}>
           <Image source={bookmarkIcon} style={styles.bookmarkIcon} />
         </TouchableOpacity>
 

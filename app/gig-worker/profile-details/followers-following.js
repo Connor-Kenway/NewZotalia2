@@ -1,98 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { jwtDecode } from 'jwt-decode';
-import { fetchFollowers, fetchFollowersCount, fetchFollowing, fetchFollowingCount } from '../../../src/services/followsServic';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
+
+const sampleProfileImage = require('../../../app/assets/images/profile-picture.png');
 
 export default function FollowersAndFollowing() {
-    const [userId, setUserId] = useState(null);
-    const [followersCount, setFollowersCount] = useState(0);
-    const [followingCount, setFollowingCount] = useState(0);
-    const [followers, setFollowers] = useState([]);
-    const [following, setFollowing] = useState([]);
-
-    useEffect(() => {
-        const getUserId = async () => {
-            console.log("Getting user ID from token...");
-            try {
-                const token = await AsyncStorage.getItem("access_token");
-                console.log('pausing on the await');
-                console.log(token);
-                if (token) {
-                    const decodedToken = jwtDecode(token);
-                    console.log('decoded');
-                    console.log("Decoded token:", decodedToken.sub);
-                    setUserId(decodedToken.sub);
-                }
-            } catch (error) {
-                console.error("Failed to decode token:", error);
-            }
-        };
-        getUserId();
-    }, []);
-
-    //don't need all this error handling and logic here, move out later
-    useEffect(() => {
-        if (userId) {
-            const loadFollowersCount = async () => {
-                console.log('loading followers', userId);
-                const response = await fetchFollowersCount(userId);
-                if (response.success !== false) {
-                    setFollowersCount(response.followed_count);
-                    console.log('Followers:', response);
-                } else {
-                    console.error(response.message);
-                }
-            };
-
-            const loadFollowingCount = async () => {
-                console.log('loading following', userId);
-                const response = await fetchFollowingCount(userId);
-                if (response.success !== false) {
-                    setFollowingCount(response.follower_count);
-                    console.log('Following:', response);
-                } else {
-                    console.error(response.message);
-                }
-            };
-
-            const loadFollowersList = async () => {
-                console.log('loading followers', userId);
-                const response = await fetchFollowers(userId);
-                if (response.success !== false) {
-                    setFollowers(response.followed);
-                    console.log('Followers:', response);
-                } else {
-                    console.error(response.message);
-                }
-            };
-
-            const loadFollowingList = async () => {
-                console.log('loading following', userId);
-                const response = await fetchFollowing(userId);
-                if (response.success !== false) {
-                    setFollowing(response.follow);
-                    console.log('Following:', response);
-                } else {
-                    console.error(response.message);
-                }
-            };
-
-            loadFollowersCount();
-            loadFollowingCount();
-            loadFollowersList();
-            loadFollowingList();
-        }
-    }, [userId]);
+    const router = useRouter();
+    const [activeTab, setActiveTab] = useState('followers');
+    const [followersCount, setFollowersCount] = useState(120);
+    const [followingCount, setFollowingCount] = useState(80);
+    const [followers, setFollowers] = useState([
+        { id: '1', name: 'John Doe', profileImage: sampleProfileImage },
+        { id: '2', name: 'Jane Smith', profileImage: sampleProfileImage },
+        { id: '3', name: 'Michael Johnson', profileImage: sampleProfileImage },
+        { id: '7', name: 'Chris Evans', profileImage: sampleProfileImage },
+        { id: '8', name: 'Natalie Portman', profileImage: sampleProfileImage },
+        { id: '11', name: 'Tom Hanks', profileImage: sampleProfileImage },
+        { id: '12', name: 'Emma Watson', profileImage: sampleProfileImage },
+        { id: '13', name: 'Leonardo DiCaprio', profileImage: sampleProfileImage },
+        { id: '14', name: 'Jennifer Lawrence', profileImage: sampleProfileImage },
+    ]);
+    const [following, setFollowing] = useState([
+        { id: '4', name: 'Emily Davis', profileImage: sampleProfileImage },
+        { id: '5', name: 'David Wilson', profileImage: sampleProfileImage },
+        { id: '6', name: 'Sarah Brown', profileImage: sampleProfileImage },
+        { id: '9', name: 'Robert Downey Jr.', profileImage: sampleProfileImage },
+        { id: '10', name: 'Scarlett Johansson', profileImage: sampleProfileImage },
+        { id: '15', name: 'Chris Hemsworth', profileImage: sampleProfileImage },
+        { id: '16', name: 'Gal Gadot', profileImage: sampleProfileImage },
+        { id: '17', name: 'Ryan Reynolds', profileImage: sampleProfileImage },
+        { id: '18', name: 'Zendaya', profileImage: sampleProfileImage },
+    ]);
 
     const renderFollowerItem = ({ item }) => (
         <TouchableOpacity style={styles.item} onPress={() => handlePress(item)}>
+            <Image source={item.profileImage} style={styles.profileImage} />
             <Text style={styles.itemText}>{item.name}</Text>
         </TouchableOpacity>
     );
 
     const renderFollowingItem = ({ item }) => (
         <TouchableOpacity style={styles.item} onPress={() => handlePress(item)}>
+            <Image source={item.profileImage} style={styles.profileImage} />
             <Text style={styles.itemText}>{item.name}</Text>
         </TouchableOpacity>
     );
@@ -102,19 +52,50 @@ export default function FollowersAndFollowing() {
         // Navigate to the user's profile or perform any other action
     };
 
+    const handleBackPress = () => {
+        router.back();
+    };
+
+    const getActiveList = () => {
+        return activeTab === 'followers' ? followers : following;
+    };
+
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Followers: {followersCount}</Text>
+            {/* Header */}
+            <View style={styles.headerContainer}>
+                <TouchableOpacity onPress={handleBackPress}>
+                    <Feather name="arrow-left" size={24} color="#333" />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Followers & Following</Text>
+            </View>
+
+            {/* Tabs */}
+            <View style={styles.tabsContainer}>
+                <TouchableOpacity
+                    style={[styles.tab, activeTab === 'followers' && styles.activeTab]}
+                    onPress={() => setActiveTab('followers')}
+                >
+                    <Text style={[styles.tabText, activeTab === 'followers' && styles.activeTabText]}>
+                        Followers ({followersCount})
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.tab, activeTab === 'following' && styles.activeTab]}
+                    onPress={() => setActiveTab('following')}
+                >
+                    <Text style={[styles.tabText, activeTab === 'following' && styles.activeTabText]}>
+                        Following ({followingCount})
+                    </Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* List */}
             <FlatList
-                data={followers}
-                renderItem={renderFollowerItem}
+                data={getActiveList()}
+                renderItem={activeTab === 'followers' ? renderFollowerItem : renderFollowingItem}
                 keyExtractor={(item) => item.id.toString()}
-            />
-            <Text style={styles.header}>Following: {followingCount}</Text>
-            <FlatList
-                data={following}
-                renderItem={renderFollowingItem}
-                keyExtractor={(item) => item.id.toString()}
+                contentContainerStyle={styles.list}
             />
         </View>
     );
@@ -126,18 +107,66 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#fff',
     },
-    header: {
-        fontSize: 18,
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    headerTitle: {
+        fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 10,
+        color: '#333',
+        marginLeft: 10,
+    },
+    tabsContainer: {
+        flexDirection: 'row',
+        marginBottom: 20,
+    },
+    tab: {
+        flex: 1,
+        paddingVertical: 10,
+        alignItems: 'center',
+        borderBottomWidth: 2,
+        borderBottomColor: 'transparent',
+    },
+    activeTab: {
+        borderBottomColor: '#6A1B9A',
+    },
+    tabText: {
+        fontSize: 16,
+        color: '#666',
+    },
+    activeTabText: {
+        color: '#6A1B9A',
+        fontWeight: 'bold',
+    },
+    list: {
+        paddingBottom: 20,
     },
     item: {
+        flexDirection: 'row',
+        alignItems: 'center',
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+        backgroundColor: 'ghostwhite',
+        borderRadius: 10,
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 3,
+    },
+    profileImage: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        marginRight: 10,
     },
     itemText: {
-        fontSize: 16,
+        fontSize: 18,
+        color: '#333',
     },
 });
 

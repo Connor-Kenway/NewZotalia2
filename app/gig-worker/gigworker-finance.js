@@ -20,19 +20,6 @@ function getColor(index) {
 }
 
 export default function GigWorkerFinance() {
-  const [monthlyIncome, currentGig] = useFinanceData();
-  //use effect to load gigs and money
-  useEffect(() => {
-    const loadIncome = async () => {
-      //need to pull user id
-      const response = await fetchMonthyIncome(AsyncStorage.getItem("access_token"));
-      console.log("after response");
-      if (response.success) {
-        setMonthlyIncome(response.income);
-      }
-    };
-    loadIncome();
-  }, []);
 
 
   const pieData = pastGigs.map((gig, index) => ({
@@ -94,7 +81,7 @@ export default function GigWorkerFinance() {
       </View>
 
       {/* Earned Text */}
-      <Text style={styles.earnedText}>You’ve earned ${monthlyIncome} this month!!!</Text>
+      <Text style={styles.earnedText}>You’ve earned $2000 this month!!!</Text>
 
       {/* Current Gig Card */}
       <View style={styles.currentGigCard}>

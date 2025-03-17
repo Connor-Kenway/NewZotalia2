@@ -6,50 +6,168 @@ import TabBar from '../components/tabbar';
 import { fetchGigs } from "../../src/services/gigService";
 
 // Dummy data for now (replace with your backend data)
-const dummyGigs = [
+const gigs = [
   {
-    id: "1",
-    name: "Gig Name",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-    payRate: "$32/hr",
+    gig_id: "1",
+    name: "Startup Animation",
+    description: "Looking for someone to creat a 2D animation for our startup...",
+    payRate: "$45/hr",
+    location: {
+      city: "San Francisco",
+      state: "CA",
+    },
+    payment_details: {
+      payRate: "$45",
+      type: "hourly",
+    },
+    status: "open",
+    start_date: "2025-03-20",
+    end_date: "2025-03-21",
   },
   {
-    id: "2",
-    name: "Gig Name",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-    payRate: "$32/hr",
+    gig_id: "2",
+    name: "AI Chatbot Implementation",
+    description: "Need a developer to implement an AI chatbot for our website...",
+    payRate: "$22/hr",
+    location: {
+      city: "San Francisco",
+      state: "CA",
+    },
+    payment_details: {
+      payRate: "$45",
+      type: "hourly",
+    },
+    status: "open",
+    start_date: "2025-03-22",
+    end_date: "2025-03-23",
   },
   {
-    id: "3",
-    name: "Gig Name",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-    payRate: "$32/hr",
+    gig_id: "3",
+    name: "Boba Shop Menu UX Design",
+    description: "Looking for a designer to create a modern and clean menu design...",
+    payRate: "$80/hr",
+    location: {
+      city: "San Francisco",
+      state: "CA",
+    },
+    payment_details: {
+      payRate: "$45",
+      type: "hourly",
+    },
+    status: "open",
+    start_date: "2025-03-24",
+    end_date: "2025-03-25",
+  },
+  {
+    gig_id: "4",
+    name: "React Native Developer",
+    description: "Need a developer to create a mobile app using React Native...",
+    payRate: "$50/hr",
+    location: {
+      city: "San Francisco",
+      state: "CA",
+    },
+    payment_details: {
+      payRate: "$45",
+      type: "hourly",
+    },
+    status: "open",
+    start_date: "2025-03-26",
+    end_date: "2025-03-27",
+  },
+  {
+    gig_id: "5",
+    name: "Website Redesign",
+    description: "Looking for a designer to redesign our website...",
+    payRate: "$60/hr",
+    location: {
+      city: "San Francisco",
+      state: "CA",
+    },
+    payment_details: {
+      payRate: "$45",
+      type: "hourly",
+    },
+    status: "open",
+    start_date: "2025-03-28",
+    end_date: "2025-03-29",
+  },
+  {
+    gig_id: "6",
+    name: "Logo Design",
+    description: "Need a designer to create a logo for our new business...",
+    payRate: "$35/hr",
+    location: {
+      city: "San Francisco",
+      state: "CA",
+    },
+    payment_details: {
+      payRate: "$45",
+      type: "hourly",
+    },
+    status: "open",
+    start_date: "2025-03-30",
+    end_date: "2025-03-31",
+  },
+  {
+    gig_id: "7",
+    name: "React Developer",
+    description: "Need a developer to create a web app using React...",
+    payRate: "$45/hr",
+    location: {
+      city: "San Francisco",
+      state: "CA",
+    },
+    payment_details: {
+      payRate: "$45",
+      type: "hourly",
+    },
+    status: "open",
+    start_date: "2025-04-01",
+    end_date: "2025-04-02",
+  },
+  {
+    gig_id: "8",
+    name: "Social Media Manager",
+    description: "Looking for someone to manage our social media accounts...",
+    payRate: "$20/hr",
+    location: {
+      city: "San Francisco",
+      state: "CA",
+    },
+    payment_details: {
+      payRate: "$45",
+      type: "hourly",
+    },
+    status: "open",
+    start_date: "2025-04-03",
+    end_date: "2025-04-04",
   },
   // Add more items as needed
 ];
 
 export default function GigSearch() {
   const router = useRouter();
-  const [gigs, setGigs] = useState([]);
+  // const [gigs, setGigs] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-  useEffect(() => {
-    const loadGigs = async () => {
-      console.log('hitting use effect')
-      const response = await fetchGigs();
-      console.log('after response')
-      if (response.success !== false) {
-        setGigs(response);
-        // setFilteredGigs(response);
-        console.log('success')
-      } else {
-        console.log('failed')
-        console.error(response.message);
-      }
-    };
+  // useEffect(() => {
+  //   const loadGigs = async () => {
+  //     console.log('hitting use effect')
+  //     const response = await fetchGigs();
+  //     console.log('after response')
+  //     if (response.success !== false) {
+  //       setGigs(response);
+  //       // setFilteredGigs(response);
+  //       console.log('success')
+  //     } else {
+  //       console.log('failed')
+  //       console.error(response.message);
+  //     }
+  //   };
 
-    loadGigs();
-  }, []);
+  //   loadGigs();
+  // }, []);
   // Filter button press
   const handleFilter = () => {
     // open filter modal or navigate to filter screen
@@ -68,7 +186,7 @@ export default function GigSearch() {
 
   // Example filter logic (optional)
   const filteredGigs = gigs.filter((gig) =>
-    gig.title.toLowerCase().includes(searchText.toLowerCase())
+    gig.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const renderGigItem = ({ item }) => {
@@ -77,7 +195,7 @@ export default function GigSearch() {
 
         {/* Gig Info */}
         <View style={styles.gigInfo}>
-          <Text style={styles.gigName}>{item.title}</Text>
+          <Text style={styles.gigName}>{item.name}</Text>
           <Text style={styles.gigDescription} numberOfLines={1}>
             {item.description}
           </Text>
@@ -208,6 +326,7 @@ const styles = StyleSheet.create({
   },
   arrow: {
     fontSize: 16,
-    color: "#999",
+    color: "#6A1B9A",
+
   },
 });

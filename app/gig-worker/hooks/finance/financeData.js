@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchMonthyIncome, fetchCurrentGig } from '../services/financeService';
+import { fetchMonthyIncome, fetchCurrentGig } from '../../../../src/services/financeService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const useFinanceData = () => {
